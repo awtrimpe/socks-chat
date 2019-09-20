@@ -1,0 +1,123 @@
+:root {
+  --main-accent-color: #fd794d;
+  --main-accent-lighter: #ffa080;
+  --main-light-blue: #5d73e5;
+  --main-tan: #fcd4c5;
+  --main-dark-blue: #131b42;
+  --main-mid-blue: #202b5f;
+  --mid-bright-blue: #2244f0;
+
+  --bright-white: #fff;
+  --main-dark-black: #232323;
+  --main-light-black: #2e3133;
+  --main-grey: #9aa0a6;
+}
+
+body {
+  color: var(--main-dark-blue);
+}
+
+textarea,
+input {
+  color: var(--main-dark-blue);
+  border-radius: 15px;
+  width: 100%;
+  width: -moz-available;
+  width: fill-available;
+  padding: 5px;
+  border: solid 1px var(--main-mid-blue);
+  outline: none;
+}
+
+textarea::-webkit-scrollbar {
+  /* width: 1em;
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  background-color: darkgrey;
+  outline: 1px solid slategrey;
+  border-radius: 25%; */
+
+  width: 10px;
+  height: 10px;
+}
+
+textarea::-webkit-scrollbar-thumb {
+  background: var(--main-dark-blue);
+  border-radius: 15px;
+}
+
+a {
+  text-decoration: none;
+}
+
+button,
+button path {
+  color: white;
+  fill: white;
+}
+
+/* IDs */
+
+#text::-webkit-scrollbar {
+  display: none;
+}
+
+/* Classes */
+
+.container {
+  max-width: 80%;
+  margin: auto;
+}
+
+.generic-button {
+  border: solid 1px var(--main-accent-color);
+  border-radius: 3px;
+  background: var(--main-accent-color);
+  padding: 4px;
+  transition: all 0.3s;
+  color: white;
+  cursor: pointer;
+}
+
+.generic-button:hover {
+  border: solid 1px var(--main-accent-lighter);
+  background-color: var(--main-accent-lighter);
+}
+
+.horizontal {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+@media (prefers-color-scheme: dark) {
+  body {
+    background-color: var(--main-dark-black);
+    color: white;
+  }
+
+  textarea,
+  input {
+    border: solid 1px var(--main-grey);
+    background: var(--main-light-black);
+    color: var(--bright-white);
+  }
+
+  textarea::-webkit-input-placeholder,
+  textarea:-moz-placeholder,
+  textarea::-moz-placeholder,
+  textarea:-ms-input-placeholder,
+  textarea::placeholder {
+    color: var(--bright-white);
+  }
+
+  ::-webkit-input-placeholder,
+  ::-moz-placeholder,
+  :-ms-input-placeholder,
+  :-moz-placeholder {
+    color: white;
+  }
+
+  button {
+    fill: var(--main-tan);
+  }
+}

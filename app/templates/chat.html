@@ -1,0 +1,155 @@
+<html>
+
+<head>
+    <title>{{ room }}</title>
+    <link rel="stylesheet" type="text/css"
+        href="{{ url_for('static', filename='style.css') }}" />
+    <script type="text/javascript" src="//code.jquery.com/jquery-1.4.2.min.js">
+    </script>
+    <script type="text/javascript"
+        src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js">
+    </script>
+    <script type="text/javascript" charset="utf-8">
+        var socket;
+        $(document).ready(function () {
+            // Instead of hardcoded, pull from site
+            const protocol = window.location.toString().includes(
+                "localhost") ? 'http://' : 'https://'
+            socket = io.connect(
+                `${protocol}${document.domain}:${location.port}/chat`
+            );
+            socket.on('connect', function () {
+                socket.emit('joined', {});
+            });
+            socket.on('status', function (data) {
+                $('#chat').val($('#chat').val() + '<' + data
+                    .msg + '>\n\n');
+                $('#chat').scrollTop($('#chat')[0]
+                    .scrollHeight);
+            });
+            socket.on('message', function (data) {
+                $('#chat').val($('#chat').val() +
+                    data.name + ":" + data.msg + '\n\n');
+                $('#chat').scrollTop($('#chat')[0]
+                    .scrollHeight);
+
+                if (!vis() && !document.title.includes("(1)")) {
+                    document.title = `(1) ${document.title}`
+                }
+            });
+            $('#text').keypress(function (e) {
+                var code = e.keyCode || e.which;
+                if (code == 13) {
+                    return sendMessage();
+                }
+            });
+        });
+
+        function sendMessage() {
+            text = $('#text').val();
+            socket.emit('text', {
+                msg: text
+            });
+            const textarea = document.getElementById(
+                "text")
+            textarea.value = "";
+            textarea.style.cssText = 'height:18px';
+            return false;
+        }
+
+        function leave_room() {
+            socket.emit('left', {}, function () {
+                socket.disconnect();
+                // go back to the login page
+                window.location.href =
+                    "{{ url_for('main.index') }}";
+            });
+        }
+
+        $(window).focus(function () {
+            document.title = document.title.replace('(1) ', '');
+        });
+
+        var vis = (function () {
+            var stateKey, eventKey, keys = {
+                hidden: "visibilitychange",
+                webkitHidden: "webkitvisibilitychange",
+                mozHidden: "mozvisibilitychange",
+                msHidden: "msvisibilitychange"
+            };
+            for (stateKey in keys) {
+                if (stateKey in document) {
+                    eventKey = keys[stateKey];
+                    break;
+                }
+            }
+            return function (c) {
+                if (c) document.addEventListener(eventKey, c);
+                return !document[stateKey];
+            }
+        })();
+    </script>
+    <script>
+        $(document).ready(function () {
+            var textarea = document.getElementById('text');
+
+            textarea.addEventListener('keydown', autosize);
+
+            function autosize() {
+                var el = this;
+                setTimeout(function () {
+                    el.style.cssText = 'height:' + el
+                        .scrollHeight + 'px';
+                }, 0);
+            }
+        });
+    </script>
+</head>
+
+<body>
+    <span class="horizontal">
+        <h1>{{ room }}</h1>
+        <a href="/" class="generic-button" onclick="leave_room();">Leave this
+            room</a>
+    </span>
+    <div class="container">
+        <textarea id="chat" cols="80" rows="20"></textarea>
+        <br><br>
+        <span class="horizontal">
+            <textarea id="text" rows="1"
+                placeholder="Enter your message here"></textarea>
+            <button class="generic-button" onclick="sendMessage()">
+                <svg width="20px" height="18px" viewBox="0 0 20 18"
+                    version="1.1" xmlns="http://www.w3.org/2000/svg"
+                    xmlns:xlink="http://www.w3.org/1999/xlink">
+                    <!-- Generator: Sketch 52.5 (67469) - http://www.bohemiancoding.com/sketch -->
+                    <title>send</title>
+                    <desc>Created with Sketch.</desc>
+                    <g id="Icons" stroke="none" stroke-width="1" fill="none"
+                        fill-rule="evenodd">
+                        <g id="Rounded"
+                            transform="translate(-374.000000, -1529.000000)">
+                            <g id="Content"
+                                transform="translate(100.000000, 1428.000000)">
+                                <g id="-Round-/-Content-/-send"
+                                    transform="translate(272.000000, 98.000000)">
+                                    <g>
+                                        <polygon id="Path"
+                                            points="0 0 24 0 24 24 0 24">
+                                        </polygon>
+                                        <path
+                                            d="M3.4,20.4 L20.85,12.92 C21.66,12.57 21.66,11.43 20.85,11.08 L3.4,3.6 C2.74,3.31 2.01,3.8 2.01,4.51 L2,9.12 C2,9.62 2.37,10.05 2.87,10.11 L17,12 L2.87,13.88 C2.37,13.95 2,14.38 2,14.88 L2.01,19.49 C2.01,20.2 2.74,20.69 3.4,20.4 Z"
+                                            id="🔹Icon-Color" fill="#1D1D1D">
+                                        </path>
+                                    </g>
+                                </g>
+                            </g>
+                        </g>
+                    </g>
+                </svg>
+            </button>
+        </span>
+    </div>
+</body>
+
+</html>
