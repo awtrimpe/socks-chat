@@ -6,18 +6,19 @@
         sizes="any">
     <link rel="stylesheet" type="text/css"
         href="{{ url_for('static', filename='style.css') }}" />
-    <script type="text/javascript" src="//code.jquery.com/jquery-1.4.2.min.js">
+    <script type="text/javascript"
+        src="{{ url_for('static', filename='js/jquery-1.4.2.min.js') }}">
     </script>
     <script type="text/javascript"
-        src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js">
+        src="{{ url_for('static', filename='js/socket.io.min.js') }}">
     </script>
-    <script
-        src="https://cdnjs.cloudflare.com/ajax/libs/markdown-it/10.0.0/markdown-it.min.js">
+    <script type="text/javascript"
+        src="{{ url_for('static', filename='js/markdown-it.min.js') }}">
     </script>
     <link rel="stylesheet"
-        href="{{ url_for('static', filename='highlight/styles/atom-one-dark-reasonable.css') }}">
+        href="{{ url_for('static', filename='js/highlight/styles/atom-one-dark-reasonable.css') }}">
     <script
-        src="{{ url_for('static', filename='highlight/highlight.pack.js') }}">
+        src="{{ url_for('static', filename='js/highlight/highlight.pack.js') }}">
     </script>
     <script>
         hljs.initHighlightingOnLoad();
@@ -112,8 +113,10 @@
         }
 
         function urlify(text) {
-            return text.replace(/(https?:\/\/[^\s]+)/g, function (url) {
-                return url.link(url);
+            return text.replace(/(\s|^|p>)(https?:\/\/[^\s]+)/g, function (
+                url) {
+                return url.replace('<p>', '').replace('</p>', '').link(
+                    url.replace('<p>', '').replace('</p>', ''));
             })
         }
 
