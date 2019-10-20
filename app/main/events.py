@@ -1,4 +1,4 @@
-from flask import session
+from flask import request, session
 from flask_socketio import emit, join_room, leave_room
 
 from .. import socketio
@@ -20,7 +20,8 @@ def text(message):
     The message is sent to all people in the room."""
     room = session.get('room')
     emit('message', {'msg': message['msg'],
-                     'name': session.get('name')}, room=room)
+                     'name': session.get('name'),
+                     'id': request.sid}, room=room)
 
 
 @socketio.on('left', namespace='/chat')
