@@ -1,14 +1,29 @@
 <html>
 
 <head>
-    <title>Smoke Chat</title>
+    <title>Socks Chat | Home</title>
+    <link rel=icon href="{{ url_for('static', filename='socks.png') }}"
+        sizes="any">
     <link rel="stylesheet" type="text/css"
         href="{{ url_for('static', filename='style.css') }}" />
 </head>
 
-<body>
-    <h1>Flask-SocketIO-Chat</h1>
-    <div class="container">
+<body class="container">
+    <header>
+        <hav>
+
+        </hav>
+    </header>
+    <span class="horizontal">
+        <h1 id="title">
+            {{ svg }}
+            Socks Chat: {{ room }}
+        </h1>
+        <a href="/" class="generic-button" onclick="leave_room();">Leave
+            this
+            room</a>
+    </span>
+    <div>
         <form method="POST">
             {{ form.hidden_tag() }}
             {{ form.name.label }}: {{ form.name() }}

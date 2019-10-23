@@ -1,6 +1,8 @@
-from flask import session, redirect, url_for, render_template, request
+from flask import Markup, redirect, render_template, request, session, url_for
+
 from . import main
 from .forms import LoginForm
+from .helpers import svg_contents
 
 
 @main.route('/', methods=['GET', 'POST'])
@@ -14,7 +16,7 @@ def index():
     elif request.method == 'GET':
         form.name.data = session.get('name', '')
         form.room.data = session.get('room', '')
-    return render_template('index.html', form=form)
+    return render_template('index.html', form=form, svg=Markup(svg_contents('./app/static/socks.svg')))
 
 
 @main.route('/chat')
@@ -25,4 +27,4 @@ def chat():
     room = session.get('room', '')
     if name == '' or room == '':
         return redirect(url_for('.index'))
-    return render_template('chat.html', name=name, room=room)
+    return render_template('chat.html', name=name, room=room, svg=Markup(svg_contents('./app/static/socks.svg')), send_logo=Markup(svg_contents('./app/static/send.svg')))
