@@ -1,4 +1,4 @@
-![Socks Logo](https://raw.githubusercontent.com/awtrimpe/socks-chat/tree/master/app/static/socks.png "Socks Logo")
+<img src="https://raw.githubusercontent.com/awtrimpe/socks-chat/master/app/static/socks.png?token=AKIUJNSE5X5HTM4JM2CJV2C5V6NHA" style="width: 100px; background: white; border-radius: 5px" />
 
 # Socks Chat Application
 

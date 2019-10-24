@@ -55,16 +55,19 @@
                 let time = document.createElement("i");
                 time.innerHTML = new Date()
                     .toLocaleTimeString();
+                // Render markdown and add URLs where necessary
                 message.innerHTML = urlify(md.render(
                     `${data.name}:\n ${data.msg}`));
                 let links = message.getElementsByTagName('a');
                 for (var i = 0; i < links.length; i++) {
                     links[i].target = "_blank";
                 }
+                // Add syntax highlighting to code blocks
                 message.querySelectorAll('pre code').forEach((
                     block) => {
                     hljs.highlightBlock(block);
                 });
+                // Add class on messages the user is sending
                 if (socket.id === data.id) {
                     message.className = 'yours';
                     time.className = 'yours';
@@ -164,7 +167,7 @@
         });
 
         $(function () {
-            $('a[href]').attr('target', '_blank');
+            $('chat a[href]').attr('target', '_blank');
         });
     </script>
 </head>
@@ -188,8 +191,8 @@
         <div id="chat"></div>
         <br><br>
         <span class="horizontal">
-            <textarea id="text" rows="1"
-                placeholder="Enter your message here"></textarea>
+            <textarea id="text" rows="1" placeholder="Enter your message here"
+                style="margin-right: 3px;"></textarea>
             <button class="generic-button round-button" onclick="sendMessage()">
                 {{ send_logo }}
             </button>

@@ -70,6 +70,7 @@ button path {
 #title img {
   width: 50px;
   padding: 10px;
+  fill: var(--main-bright-blue);
 }
 
 #chat {
@@ -92,6 +93,10 @@ button path {
   border-radius: 13px;
 }
 
+#chat span img {
+  max-width: 100%;
+}
+
 #chat span a {
   text-decoration: underline;
   color: inherit;
@@ -103,7 +108,7 @@ button path {
   margin-left: auto;
 }
 
-#chat span.yours > *:first-child {
+#chat > span > *:first-child {
   margin: 0px;
 }
 
@@ -160,6 +165,7 @@ button path {
 }
 
 .horizontal {
+  width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -172,7 +178,7 @@ button path {
   }
 
   #title svg {
-    fill: var(--main-light-blue);
+    fill: var(--mid-bright-blue);
   }
 
   #chat,
