@@ -126,6 +126,7 @@ button path {
 #title img {
   width: 50px;
   padding: 10px;
+  fill: var(--main-bright-blue);
 }
 
 #chat {
@@ -164,7 +165,7 @@ button path {
   margin-left: auto;
 }
 
-#chat span.yours > *:first-child {
+#chat > span > *:first-child {
   margin: 0px;
 }
 
@@ -294,7 +295,7 @@ button path {
   }
 
   #title svg {
-    fill: var(--main-light-blue);
+    fill: var(--mid-bright-blue);
   }
 
   #chat,

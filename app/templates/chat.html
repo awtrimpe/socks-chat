@@ -55,16 +55,19 @@
                 let time = document.createElement("i");
                 time.innerHTML = new Date()
                     .toLocaleTimeString();
+                // Render markdown and add URLs where necessary
                 message.innerHTML = urlify(md.render(
                     `${data.name}:\n ${data.msg}`));
                 let links = message.getElementsByTagName('a');
                 for (var i = 0; i < links.length; i++) {
                     links[i].target = "_blank";
                 }
+                // Add syntax highlighting to code blocks
                 message.querySelectorAll('pre code').forEach((
                     block) => {
                     hljs.highlightBlock(block);
                 });
+                // Add class on messages the user is sending
                 if (socket.id === data.id) {
                     message.className = 'yours';
                     time.className = 'yours';
