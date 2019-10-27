@@ -27,3 +27,8 @@ def chat():
     if name == '' or room == '':
         return redirect(url_for('.index'))
     return render_template('chat.html', name=name, room=room, svg=Markup(svg_contents('./app/static/socks.svg')), send_logo=Markup(svg_contents('./app/static/send.svg')))
+
+
+@main.route('/about')
+def about():
+    return render_template('about.html', svg=Markup(svg_contents('./app/static/socks.svg')), github=Markup(svg_contents('./app/static/github.svg')))

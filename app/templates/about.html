@@ -1,0 +1,22 @@
+<html>
+
+<head>
+    <title>Socks Chat | About</title>
+    <link rel=icon href="{{ url_for('static', filename='socks.png') }}"
+        sizes="any">
+    <link rel="stylesheet" type="text/css"
+        href="{{ url_for('static', filename='style.css') }}" />
+</head>
+
+<body>
+    <header>
+        {% include 'header.html' %}
+    </header>
+    <div class="container">
+        <a href="https://github.com/awtrimpe/socks-chat" target="_blank">
+            <span class="horizontal main-svg-color">{{ github }}GitHub</span>
+        </a>
+    </div>
+</body>
+
+</html>
