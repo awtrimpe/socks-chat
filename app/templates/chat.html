@@ -1,7 +1,7 @@
 <html>
 
 <head>
-    <title>{{ room }}</title>
+    <title>Socks Chat | Chat</title>
     <link rel=icon href="{{ url_for('static', filename='socks.png') }}"
         sizes="any">
     <link rel="stylesheet" type="text/css"
@@ -164,17 +164,19 @@
         });
 
         $(function () {
-            $('a[href]').attr('target', '_blank');
+            $('chat a[href]').attr('target', '_blank');
         });
     </script>
 </head>
 
 <body>
+    <header>
+        {% include 'header.html' %}
+    </header>
     <div class="container">
-        <span class="horizontal">
+        <span class="horizontal-spaced">
             <h1 id="title">
-                {{ svg }}
-                Socks Chat: {{ room }}
+                {{ room }}
             </h1>
             <a href="/" class="generic-button" onclick="leave_room();">
                 Leave this room
@@ -187,7 +189,7 @@
         </div>
         <div id="chat"></div>
         <br><br>
-        <span class="horizontal">
+        <span class="horizontal-spaced">
             <textarea id="text" rows="1"
                 placeholder="Enter your message here"></textarea>
             <button class="generic-button round-button" onclick="sendMessage()">

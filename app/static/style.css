@@ -14,23 +14,37 @@
 }
 
 :root {
-  --main-accent-color: #fd794d;
-  --main-accent-lighter: #ffa080;
-  --main-light-blue: #5d73e5;
-  --main-tan: #fcd4c5;
-  --main-dark-blue: #131b42;
-  --main-mid-blue: #202b5f;
-  --mid-bright-blue: #2244f0;
-
-  --bright-white: #fff;
+  /* Black */
+  --dark-black: #000;
   --main-dark-black: #232323;
   --main-light-black: #2e3133;
   --main-grey: #9aa0a6;
+  --links-grey: #cacaca;
+  /* White */
+  --bright-white: #fff;
+  /* Orange */
+  --main-accent-color: #fd794d;
+  --main-accent-lighter: #ffa080;
+  --main-tan: #fcd4c5;
+  /* Blue */
+  --main-dark-blue: #131b42;
+  --main-mid-blue: #202b5f;
+  --mid-bright-blue: #2244f0;
+  --main-light-blue: #5d73e5;
+}
+
+html,
+.generic-button {
+  font-size: 14px;
 }
 
 body {
   color: var(--main-dark-blue);
   font-family: Muller;
+}
+
+header {
+  width: 100%;
 }
 
 #chat,
@@ -53,17 +67,59 @@ a {
 
 button,
 button path {
-  color: white;
-  fill: white;
+  color: var(--bright-white);
+  fill: var(--bright-white);
 }
 
 /* IDs */
 
-#title {
+#hamburger {
+  margin: 1em;
+  width: 40px;
+  z-index: 2;
+  cursor: pointer;
+}
+
+#hamburger:after,
+#hamburger:before,
+#hamburger #menu-icon {
+  background-color: var(--main-dark-black);
+  border-radius: 3px;
+  content: "";
+  display: block;
+  height: 5px;
+  margin: 7px 0;
+  transition: all 0.2s ease-in-out;
+}
+
+#side-menu {
+  background: var(--bright-white);
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 93vh;
+  width: 0;
+  overflow-y: scroll;
+}
+
+#side-menu.show {
+  width: 15%;
+  padding: 30px;
+  padding-top: 5em;
+  border-right: var(--main-grey) 1px solid;
+  transition: width 0.3s;
+}
+
+#side-menu a {
+  color: var(--main-dark-black);
+}
+
+#title,
+#title a,
+.horizontal {
   display: flex;
-  max-width: 50%;
-  width: 100%;
   align-items: center;
+  color: inherit;
 }
 
 #title svg,
@@ -73,6 +129,7 @@ button path {
 }
 
 #chat {
+  width: inherit;
   height: 60%;
   max-height: -webkit-fill-available;
   display: flex;
@@ -90,6 +147,10 @@ button path {
   padding: 6px;
   margin: 3px;
   border-radius: 13px;
+}
+
+#chat > span img {
+  max-width: 100%;
 }
 
 #chat span a {
@@ -115,36 +176,67 @@ button path {
   margin-left: auto;
 }
 
-#chat::-webkit-scrollbar {
+#chat::-webkit-scrollbar,
+#side-menu::-webkit-scrollbar {
   width: 10px;
   height: 10px;
 }
 
-#chat::-webkit-scrollbar-thumb {
+#chat::-webkit-scrollbar-thumb,
+#side-menu::-webkit-scrollbar-thumb {
   background: var(--main-grey);
   border-radius: 15px;
 }
 
 #text::-webkit-scrollbar,
 #chat::-webkit-scrollbar-corner,
-#chat::-webkit-resizer {
+#chat::-webkit-resizer,
+#side-menu::-webkit-scrollbar,
+#side-menu::-webkit-scrollbar-corner,
+#side-menu::-webkit-resizer {
   display: none;
 }
 
+#text {
+  margin-right: 6px;
+}
+
 /* Classes */
+
+.hamburger-clicked:before {
+  transform: translateY(12px) rotate(135deg);
+}
+
+.hamburger-clicked:after {
+  transform: translateY(-12px) rotate(-135deg);
+}
+
+.hamburger-clicked div {
+  transform: scale(0);
+}
 
 .container {
   max-width: 80%;
   margin: auto;
 }
 
+.form-container {
+  width: 50%;
+  margin: auto;
+  padding: 3em;
+  border: var(--main-grey) 1px solid;
+  border-radius: 8px;
+}
+
 .generic-button {
+  width: auto;
+  padding: 11.45px 20.37px;
+  font-size: 14px;
   border: solid 1px var(--main-accent-color);
   border-radius: 3px;
   background: var(--main-accent-color);
-  padding: 4px 8px;
   transition: all 0.3s;
-  color: white;
+  color: var(--bright-white);
   cursor: pointer;
 }
 
@@ -157,18 +249,48 @@ button path {
   width: 35px;
   height: 35px;
   border-radius: 50%;
+  padding: 8px;
 }
 
-.horizontal {
+.horizontal-spaced {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
+.right-align {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.main-svg-color {
+  color: var(--dark-black);
+  fill: var(--dark-black);
+}
+
 @media (prefers-color-scheme: dark) {
   body {
+    background: var(--bright-white);
     background-color: var(--main-dark-black);
-    color: white;
+    color: var(--bright-white);
+  }
+
+  button {
+    fill: var(--main-tan);
+  }
+
+  #hamburger:after,
+  #hamburger:before,
+  #hamburger #menu-icon {
+    background-color: var(--bright-white);
+  }
+
+  #side-menu {
+    background: var(--dark-black);
+  }
+
+  #side-menu a {
+    color: var(--links-grey);
   }
 
   #title svg {
@@ -189,7 +311,8 @@ button path {
     color: var(--bright-white);
   }
 
-  button {
-    fill: var(--main-tan);
+  .main-svg-color {
+    color: var(--bright-white);
+    fill: var(--bright-white);
   }
 }
