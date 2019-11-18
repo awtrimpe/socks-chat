@@ -14,23 +14,15 @@
 }
 
 :root {
-  /* Black */
   --dark-black: #000;
-  --main-dark-black: #232323;
-  --main-light-black: #2e3133;
-  --main-grey: #9aa0a6;
-  --links-grey: #cacaca;
-  /* White */
+  --main-dark-blue: #383443;
+  --main-grey: #9699a8;
+  --main-accent-orange: #ff8f00;
+  --main-burnt-orange: #fc570f;
+  --main-darker-grey: #807b78;
+  --main-brown: #8e633a;
+  --main-light-blue: #5d4f5e;
   --bright-white: #fff;
-  /* Orange */
-  --main-accent-color: #fd794d;
-  --main-accent-lighter: #ffa080;
-  --main-tan: #fcd4c5;
-  /* Blue */
-  --main-dark-blue: #131b42;
-  --main-mid-blue: #202b5f;
-  --mid-bright-blue: #2244f0;
-  --main-light-blue: #5d73e5;
 }
 
 html,
@@ -56,7 +48,7 @@ input {
   width: -moz-available;
   width: fill-available;
   padding: 5px;
-  border: solid 1px var(--main-mid-blue);
+  border: solid 1px var(--main-grey);
   outline: none;
 }
 
@@ -83,7 +75,7 @@ button path {
 #hamburger:after,
 #hamburger:before,
 #hamburger #menu-icon {
-  background-color: var(--main-dark-black);
+  background-color: var(--main-dark-blue);
   border-radius: 3px;
   content: "";
   display: block;
@@ -111,7 +103,7 @@ button path {
 }
 
 #side-menu a {
-  color: var(--main-dark-black);
+  color: var(--main-dark-blue);
 }
 
 #title,
@@ -140,8 +132,8 @@ button path {
 }
 
 #chat > span {
-  background-color: var(--main-tan);
-  color: var(--main-dark-blue);
+  background-color: var(--main-light-blue);
+  color: var(--bright-white);
   width: fit-content;
   max-width: 40%;
   word-break: break-word;
@@ -160,7 +152,7 @@ button path {
 }
 
 #chat span.yours {
-  background-color: var(--main-accent-lighter);
+  background-color: var(--main-accent-orange);
   color: var(--bright-white);
   margin-left: auto;
 }
@@ -233,17 +225,17 @@ button path {
   width: auto;
   padding: 11.45px 20.37px;
   font-size: 14px;
-  border: solid 1px var(--main-accent-color);
+  border: solid 1px var(--main-burnt-orange);
   border-radius: 3px;
-  background: var(--main-accent-color);
+  background: var(--main-burnt-orange);
   transition: all 0.3s;
   color: var(--bright-white);
   cursor: pointer;
 }
 
 .generic-button:hover {
-  border: solid 1px var(--main-accent-lighter);
-  background-color: var(--main-accent-lighter);
+  border: solid 1px var(--main-accent-orange);
+  background-color: var(--main-accent-orange);
 }
 
 .round-button {
@@ -272,12 +264,16 @@ button path {
 @media (prefers-color-scheme: dark) {
   body {
     background: var(--bright-white);
-    background-color: var(--main-dark-black);
+    background-color: var(--main-dark-blue);
     color: var(--bright-white);
   }
 
   button {
-    fill: var(--main-tan);
+    fill: var(--main-brown);
+  }
+
+  #chat > span {
+    background-color: var(--main-dark-blue);
   }
 
   #hamburger:after,
@@ -291,18 +287,19 @@ button path {
   }
 
   #side-menu a {
-    color: var(--links-grey);
+    color: var(--main-grey);
   }
 
   #title svg {
-    fill: var(--mid-bright-blue);
+    fill: var(--main-grey);
   }
 
   #chat,
+  .form-container,
   textarea,
   input {
     border: solid 1px var(--main-grey);
-    background: var(--main-light-black);
+    background-color: var(--main-light-blue);
     color: var(--bright-white);
   }
 
@@ -310,6 +307,11 @@ button path {
   textarea::-ms-input-placeholder,
   textarea::placeholder {
     color: var(--bright-white);
+  }
+
+  input,
+  textarea {
+    border-color: var(--main-grey);
   }
 
   .main-svg-color {

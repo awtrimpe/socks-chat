@@ -6,6 +6,9 @@ verify_ssl = true
 [dev-packages]
 pylint = "*"
 autopep8 = "*"
+pytest = "*"
+pytest-describe = "*"
+pytest-cov = "*"
 
 [packages]
 click = "==6.7"

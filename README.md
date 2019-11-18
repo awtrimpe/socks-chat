@@ -20,4 +20,6 @@ To run this application install the requirements in a virtual environment, run `
 
 ## Formatting
 
+You must have autopep8 installed for Python 3.6
+
 Please copy the file `formatting/pre-commit` to your `.git/hooks/` directory to preserve autopep8 formatting
