@@ -11,4 +11,4 @@ if __name__ == '__main__':
                      certfile=os.getenv('site_cert_path')+'cert.pem',
                      )
     else:
-        socketio.run(app,    host='0.0.0.0', port=5000)
+        socketio.run(app, host='0.0.0.0', port=5000)
