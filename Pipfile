@@ -6,6 +6,8 @@ verify_ssl = true
 [dev-packages]
 pylint = "*"
 autopep8 = "*"
+autohooks = "*"
+autohooks-plugin-autopep8 = "*"
 
 [packages]
 click = "==6.7"
