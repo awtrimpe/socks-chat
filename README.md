@@ -1,4 +1,4 @@
-<img src="app/static/socks.png" style="width: 100px; background: white; border-radius: 5px" />
+<img src="app/static/socks.png" width="100" style="background: white; border-radius: 5px"/>
 
 # Socks Chat Application
 
@@ -19,6 +19,17 @@ and visit `http://localhost:5000` on one or more browser tabs.
 | Socket.IO    |  1.3.6  | Sending messages                         |
 | markdown-it  | 10.0.0  | Rendering Markdown sent in messages      |
 | Highlight.js | 9.15.10 | Highlighting syntax in markdown messages |
+
+## Contributing
+
+To start contributing to the project, I highly recommend using a tool like [Pipenv](https://github.com/pypa/pipenv).
+All examples here will be given using Pipenv.
+
+1. Clone the repository
+2. Install necessary packages
+   - `pipenv install`
+3. Setup git hooks to auto-format code (consistency is king)
+   - `pipenv run autohooks activate`
 
 ## Formatting
 
