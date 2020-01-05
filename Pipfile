@@ -6,6 +6,9 @@ verify_ssl = true
 [dev-packages]
 pylint = "*"
 autopep8 = "*"
+pytest = "*"
+pytest-describe = "*"
+pytest-cov = "*"
 
 [packages]
 click = "==6.7"
@@ -22,6 +25,9 @@ Jinja2 = "==2.10"
 MarkupSafe = "==1.0"
 Werkzeug = "==0.14.1"
 WTForms = "==2.2.1"
+sqlalchemy = "*"
+mypy = "*"
+mysqlclient = "*"
 
 [requires]
 python_version = "3.6"
