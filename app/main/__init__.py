@@ -1,5 +1,4 @@
-from flask import Blueprint
+# Import to allow the tables to be set on base for SQLAlchemy auto-creation
+import app.main.database.tables
 
-main = Blueprint('main', __name__)
-
-from . import routes, events
+from . import events, routes
