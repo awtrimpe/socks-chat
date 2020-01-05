@@ -3,6 +3,7 @@ import os
 from contextlib import contextmanager
 
 import pytest
+from flask import template_rendered
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
