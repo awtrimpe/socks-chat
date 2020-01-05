@@ -1,12 +1,14 @@
-<img src="https://raw.githubusercontent.com/awtrimpe/socks-chat/master/app/static/socks.png" style="width: 100px; background: white; border-radius: 5px" />
+<img src="app/static/socks.png" style="width: 100px; background: white; border-radius: 5px" />
 
 # Socks Chat Application
 
 ## Socks
 
-Socks is [Python](https://www.python.org/) based instant messaging application that uses [Flask](https://palletsprojects.com/p/flask/) & [SocketIO](https://socket.io/).
+Socks is [Python](https://www.python.org/) based instant messaging application that
+uses [Flask](https://palletsprojects.com/p/flask/) & [SocketIO](https://socket.io/).
 
-To run this application install the requirements in a virtual environment, run `python chat.py` and visit `http://localhost:5000` on one or more browser tabs.
+To run this application install the requirements in a virtual environment, run `python chat.py`
+and visit `http://localhost:5000` on one or more browser tabs.
 
     $ python chat.py
 
@@ -20,6 +22,18 @@ To run this application install the requirements in a virtual environment, run `
 
 ## Formatting
 
-You must have autopep8 installed for Python 3.6
+#### Autohooks
 
-Please copy the file `formatting/pre-commit` to your `.git/hooks/` directory to preserve autopep8 formatting
+To ensure a consistent format for all systems, [Autohooks](https://pypi.org/project/autohooks/)
+has been used. In order to automatically install the necessary git pre-commit hook,
+simply run the command:
+
+    $ pipenv run autohooks activate
+
+#### Manual autopep8
+
+If Autohooks does not work for you (it may not work on all operating systems yet),
+please copy the file `formatting/pre-commit` to your `.git/hooks/` directory to preserve
+autopep8 formatting.
+
+_\*\*Note: You must have autopep8 installed globally for Python 3.6_
