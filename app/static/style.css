@@ -302,6 +302,10 @@ button path {
   padding: 10px;
 }
 
+.emojiPicker ul a {
+  width: 9%;
+}
+
 .emojiPicker ul:first-child {
   position: fixed;
   width: 400px !important;
