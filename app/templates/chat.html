@@ -53,6 +53,8 @@
                 let chat = document.getElementById("chat");
                 let message = document.createElement("span");
                 let time = document.createElement("i");
+                let typing = document.getElementById('typing');
+                typing.style.display = "none";
                 time.innerHTML = new Date()
                     .toLocaleTimeString();
                 // Render markdown and add URLs where necessary
@@ -81,21 +83,27 @@
                     document.title = `(1) ${document.title}`
                 }
             });
+            let typing_timestamp = 0;
             socket.on('user_typing', function (data) {
+                typing_timestamp = Date.now() + 4000
                 let typing = document.getElementById('typing');
                 typing.classList.remove('hidden');
                 if (socket.id !== data.id) {
                     typing.innerText = `${data.name} is typing`;
-                    typing.style.opacity = 0;
+                    typing.style.opacity = 1;
+                    typing.style.display = "block";
                     setTimeout(function () {
-                        typing.classList.add('hidden');
-                    }, 200);
+                        if (Date.now() >
+                            typing_timestamp) {
+                            typing.classList.add(
+                                'hidden');
+                        }
+                    }, 4500);
                 }
             });
 
             $('#text').keypress(function (e) {
                 socket.emit('typing', {});
-                console.log(e);
                 var code = e.keyCode || e.which;
                 if (code === 13 && !e.shiftKey) {
                     return sendMessage();

@@ -223,7 +223,7 @@ button path {
 }
 
 #typing.hidden {
-  animation: hidden 5s forwards;
+  animation: hidden 1s forwards;
 }
 
 #side-menu.show {
@@ -300,6 +300,15 @@ button path {
 .input-container > div {
   width: 100%;
   padding: 10px;
+}
+
+.emojiPicker ul:first-child {
+  position: fixed;
+  width: 400px !important;
+}
+
+.emojiPicker ul:not(:first-child) {
+  margin: 20px 0px 0px 3% !important;
 }
 
 /* Media Queries */
