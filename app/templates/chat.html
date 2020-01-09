@@ -17,10 +17,10 @@
     </script>
     <link rel="stylesheet"
         href="{{ url_for('static', filename='js/highlight/styles/atom-one-dark-reasonable.css') }}">
-    <script
+    <script type="text/javascript" charset="utf-8"
         src="{{ url_for('static', filename='js/highlight/highlight.pack.js') }}">
     </script>
-    <script>
+    <script type="text/javascript" charset="utf-8">
         hljs.initHighlightingOnLoad();
     </script>
     <script type="text/javascript" charset="utf-8">
@@ -81,7 +81,21 @@
                     document.title = `(1) ${document.title}`
                 }
             });
+            socket.on('user_typing', function (data) {
+                let typing = document.getElementById('typing');
+                typing.classList.remove('hidden');
+                if (socket.id !== data.id) {
+                    typing.innerText = `${data.name} is typing`;
+                    typing.style.opacity = 0;
+                    setTimeout(function () {
+                        typing.classList.add('hidden');
+                    }, 200);
+                }
+            });
+
             $('#text').keypress(function (e) {
+                socket.emit('typing', {});
+                console.log(e);
                 var code = e.keyCode || e.which;
                 if (code === 13 && !e.shiftKey) {
                     return sendMessage();
@@ -92,6 +106,10 @@
                         .getElementById("text")
                         .value
                 }
+            });
+
+            window.addEventListener('beforeunload', function () {
+                socket.emit('left', {});
             });
         });
 
@@ -151,7 +169,7 @@
             document.getElementById('chat').innerHTML = '';
         }
     </script>
-    <script>
+    <script type="text/javascript" charset="utf-8">
         $(document).ready(function () {
             var textarea = document.getElementById('text');
 
@@ -192,8 +210,9 @@
         </div>
         <div id="chat"></div>
         <br><br>
-        <span class="horizontal-spaced">
-            <textarea id="text" rows="1"
+        <span id="typing" style="opacity: 0;"></span>
+        <span class="horizontal-spaced input-container">
+            <textarea id="text" rows="1" data-meteor-emoji="true"
                 placeholder="Enter your message here"></textarea>
             <button class="generic-button round-button" onclick="sendMessage()">
                 {{ send_logo }}
@@ -201,5 +220,11 @@
         </span>
     </div>
 </body>
+<script src="static/js/meteorEmoji.js"></script>
+<script>
+    (() => {
+        new MeteorEmoji()
+    })()
+</script>
 
 </html>

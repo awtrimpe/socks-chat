@@ -40,6 +40,11 @@ header {
   width: 100%;
 }
 
+footer {
+  padding: 10px 0px;
+  text-align: center;
+}
+
 #chat,
 textarea,
 input {
@@ -176,8 +181,14 @@ button path {
   height: 10px;
 }
 
+.emojiPicker::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
 #chat::-webkit-scrollbar-thumb,
-#side-menu::-webkit-scrollbar-thumb {
+#side-menu::-webkit-scrollbar-thumb,
+.emojiPicker::-webkit-scrollbar-thumb {
   background: var(--main-grey);
   border-radius: 15px;
 }
@@ -187,12 +198,36 @@ button path {
 #chat::-webkit-resizer,
 #side-menu::-webkit-scrollbar,
 #side-menu::-webkit-scrollbar-corner,
-#side-menu::-webkit-resizer {
+#side-menu::-webkit-resizer,
+.emojiPicker::-webkit-scrollbar-corner,
+.emojiPicker::-webkit-resizer {
   display: none;
+}
+
+#chat::-webkit-scrollbar-track {
+  margin: 6px;
 }
 
 #text {
   margin-right: 6px;
+}
+
+#typing:after {
+  overflow: hidden;
+  display: inline-block;
+  vertical-align: bottom;
+  -webkit-animation: ellipsis steps(4, end) 900ms infinite;
+  animation: ellipsis steps(4, end) 900ms infinite;
+  content: "\2026";
+  width: 0px;
+}
+
+#typing.hidden {
+  animation: hidden 5s forwards;
+}
+
+#side-menu.show {
+  z-index: 1;
 }
 
 /* Classes */
@@ -262,6 +297,13 @@ button path {
   fill: var(--dark-black);
 }
 
+.input-container > div {
+  width: 100%;
+  padding: 10px;
+}
+
+/* Media Queries */
+
 @media (prefers-color-scheme: dark) {
   body {
     background: var(--bright-white);
@@ -295,6 +337,10 @@ button path {
     fill: var(--main-grey);
   }
 
+  .input-container svg {
+    fill: #fff;
+  }
+
   #chat,
   .form-container,
   textarea,
@@ -318,5 +364,54 @@ button path {
   .main-svg-color {
     color: var(--bright-white);
     fill: var(--bright-white);
+  }
+
+  .emojiPicker ul:first-child {
+    background: var(--main-darker-grey) !important;
+  }
+
+  .emojiPicker,
+  .emojiPicker ul {
+    background: var(--dark-grey) !important;
+  }
+}
+
+@keyframes ellipsis {
+  to {
+    width: 1.25em;
+  }
+}
+
+@-webkit-keyframes ellipsis {
+  to {
+    width: 1.25em;
+  }
+}
+
+@keyframes hidden {
+  0% {
+    opacity: 1;
+  }
+
+  90% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
+
+@-webkit-keyframes hidden {
+  0% {
+    opacity: 1;
+  }
+
+  90% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
   }
 }
