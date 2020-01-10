@@ -91,7 +91,6 @@
                 if (socket.id !== data.id) {
                     typing.innerText = `${data.name} is typing`;
                     typing.style.opacity = 1;
-                    typing.style.display = "block";
                     setTimeout(function () {
                         if (Date.now() >
                             typing_timestamp) {
