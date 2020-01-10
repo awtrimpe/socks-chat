@@ -92,7 +92,7 @@
                                     emojiInput.hasAttribute("data-meteor-emoji-large") || "block" === emojiPicker.style.display && (emojiPicker.contains(e.target) || emojiTrigger.contains(e.target) || (emojiPicker.style.display = "none"))
                                 });
                                 var facesCategory = document.createElement("ul");
-                                facesCategory.style.padding = "10px 0px", facesCategory.style.margin = "0", facesCategory.style.marginLeft = "3%", facesCategory.style.flexWrap = "wrap", facesCategory.classList.add("faces");
+                                facesCategory.style.padding = "10px 0px", facesCategory.style.margin = "0", facesCategory.style.marginLeft = "3%", facesCategory.style.display= "flex", facesCategory.style.flexWrap = "wrap", facesCategory.classList.add("faces");
                                 var animalsCategory = document.createElement("ul");
                                 animalsCategory.style.padding = "10px 0px", animalsCategory.style.margin = "0", animalsCategory.style.marginLeft = "3%", animalsCategory.style.flexWrap = "wrap", animalsCategory.classList.add("animals"), animalsCategory.style.display = "none";
                                 var foodCategory = document.createElement("ul");
