@@ -9,7 +9,7 @@ bp = Blueprint('main', __name__)
 
 @bp.route('/', methods=['GET', 'POST'])
 def index():
-    """Login form to enter a room."""
+    '''Login form to enter a room.'''
     form = LoginForm()
     if form.validate_on_submit():
         session['name'] = form.name.data
@@ -23,7 +23,7 @@ def index():
 
 @bp.route('/chat')
 def chat():
-    """Chat room. The user's name and room must be stored in the session."""
+    '''Chat room. The user's name and room must be stored in the session.'''
     name = session.get('name', '')
     room = session.get('room', '')
     if name == '' or room == '':
