@@ -308,12 +308,8 @@ button path {
 }
 
 .emojiPicker ul:first-child {
-  position: fixed;
-  width: 400px !important;
-}
-
-.emojiPicker ul:not(:first-child) {
-  margin: 20px 0px 0px 3% !important;
+  position: sticky;
+  top: 0;
 }
 
 /* Media Queries */
