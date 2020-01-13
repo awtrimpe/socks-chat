@@ -8,10 +8,10 @@ socketio = SocketIO()
 
 
 def create_app(debug=False):
-    """Create an application."""
+    '''Create an application.'''
     app = Flask(__name__)
     app.debug = debug
-    if "pytest" in sys.modules:
+    if 'pytest' in sys.modules:
         app.config['WTF_CSRF_ENABLED'] = False
     app.config['SECRET_KEY'] = os.getenv('secret_key')
 

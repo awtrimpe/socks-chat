@@ -17,10 +17,10 @@
     </script>
     <link rel="stylesheet"
         href="{{ url_for('static', filename='js/highlight/styles/atom-one-dark-reasonable.css') }}">
-    <script
+    <script type="text/javascript" charset="utf-8"
         src="{{ url_for('static', filename='js/highlight/highlight.pack.js') }}">
     </script>
-    <script>
+    <script type="text/javascript" charset="utf-8">
         hljs.initHighlightingOnLoad();
     </script>
     <script type="text/javascript" charset="utf-8">
@@ -28,7 +28,7 @@
         $(document).ready(function () {
             // Instead of hard coded value, pull from site
             const protocol = window.location.toString().includes(
-                "localhost") ? 'http://' : 'https://'
+                'localhost') ? 'http://' : 'https://'
             socket = io.connect(
                 `${protocol}${document.domain}:${location.port}/chat`
             );
@@ -36,9 +36,9 @@
                 socket.emit('joined', {});
             });
             socket.on('status', function (data) {
-                let chat = document.getElementById("chat");
-                let message = document.createElement("span");
-                let time = document.createElement("i");
+                let chat = document.getElementById('chat');
+                let message = document.createElement('span');
+                let time = document.createElement('i');
                 time.innerHTML = new Date()
                     .toLocaleTimeString();
                 chat.appendChild(time);
@@ -50,9 +50,13 @@
             });
             socket.on('message', function (data) {
                 var md = window.markdownit();
-                let chat = document.getElementById("chat");
-                let message = document.createElement("span");
-                let time = document.createElement("i");
+                let chat = document.getElementById('chat');
+                let message = document.createElement('span');
+                let time = document.createElement('i');
+                let typing = document.getElementById('typing');
+                if (socket.id !== data.id) {
+                    typing.style.opacity = 0;
+                }
                 time.innerHTML = new Date()
                     .toLocaleTimeString();
                 // Render markdown and add URLs where necessary
@@ -60,7 +64,7 @@
                     `${data.name}:\n ${data.msg}`));
                 let links = message.getElementsByTagName('a');
                 for (var i = 0; i < links.length; i++) {
-                    links[i].target = "_blank";
+                    links[i].target = '_blank';
                 }
                 // Add syntax highlighting to code blocks
                 message.querySelectorAll('pre code').forEach((
@@ -77,21 +81,44 @@
                 $('#chat').scrollTop($('#chat')[0]
                     .scrollHeight);
 
-                if (!vis() && !document.title.includes("(1)")) {
+                if (!vis() && !document.title.includes('(1)')) {
                     document.title = `(1) ${document.title}`
                 }
             });
+            let typing_timestamp = 0;
+            socket.on('user_typing', function (data) {
+                let typing = document.getElementById('typing');
+                if (socket.id !== data.id) {
+                    typing_timestamp = Date.now() + 4000
+                    typing.classList.remove('hidden');
+                    typing.innerText = `${data.name} is typing`;
+                    typing.style.opacity = 1;
+                    setTimeout(function () {
+                        if (Date.now() >
+                            typing_timestamp) {
+                            typing.classList.add(
+                                'hidden');
+                        }
+                    }, 5000);
+                }
+            });
+
             $('#text').keypress(function (e) {
+                socket.emit('typing', {});
                 var code = e.keyCode || e.which;
                 if (code === 13 && !e.shiftKey) {
                     return sendMessage();
                 }
                 if (code === 13 && e.shiftKey) {
-                    document.getElementById("text")
+                    document.getElementById('text')
                         .value = document
-                        .getElementById("text")
+                        .getElementById('text')
                         .value
                 }
+            });
+
+            window.addEventListener('beforeunload', function () {
+                socket.emit('left', {});
             });
         });
 
@@ -100,8 +127,8 @@
             socket.emit('text', {
                 msg: text
             });
-            const textarea = document.getElementById("text");
-            textarea.value = "";
+            const textarea = document.getElementById('text');
+            textarea.value = '';
             textarea.style.cssText = 'height:18px';
             return false;
         }
@@ -111,7 +138,7 @@
                 socket.disconnect();
                 // go back to the login page
                 window.location.href =
-                    "{{ url_for('main.index') }}";
+                    '{{ url_for("main.index") }}';
             });
         }
 
@@ -130,10 +157,10 @@
 
         var vis = (function () {
             var stateKey, eventKey, keys = {
-                hidden: "visibilitychange",
-                webkitHidden: "webkitvisibilitychange",
-                mozHidden: "mozvisibilitychange",
-                msHidden: "msvisibilitychange"
+                hidden: 'visibilitychange',
+                webkitHidden: 'webkitvisibilitychange',
+                mozHidden: 'mozvisibilitychange',
+                msHidden: 'msvisibilitychange'
             };
             for (stateKey in keys) {
                 if (stateKey in document) {
@@ -151,7 +178,7 @@
             document.getElementById('chat').innerHTML = '';
         }
     </script>
-    <script>
+    <script type="text/javascript" charset="utf-8">
         $(document).ready(function () {
             var textarea = document.getElementById('text');
 
@@ -192,8 +219,9 @@
         </div>
         <div id="chat"></div>
         <br><br>
-        <span class="horizontal-spaced">
-            <textarea id="text" rows="1"
+        <span id="typing" style="opacity: 0;"></span>
+        <span class="horizontal-spaced input-container">
+            <textarea id="text" rows="1" data-meteor-emoji="true"
                 placeholder="Enter your message here"></textarea>
             <button class="generic-button round-button" onclick="sendMessage()">
                 {{ send_logo }}
@@ -201,5 +229,11 @@
         </span>
     </div>
 </body>
+<script src="static/js/meteorEmoji.js"></script>
+<script>
+    (() => {
+        new MeteorEmoji()
+    })()
+</script>
 
 </html>

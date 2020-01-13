@@ -27,6 +27,14 @@
             </form>
         </div>
     </div>
+    <footer class="container">
+        Socks Chat &copy; 2019 - <text id="year"></text>
+    </footer>
 </body>
+
+<script type="text/javascript" charset="utf-8">
+    document.onload = document.getElementById('year').innerText = new Date()
+        .getFullYear();
+</script>
 
 </html>
