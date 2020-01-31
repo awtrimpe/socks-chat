@@ -69,6 +69,12 @@ button path {
   fill: var(--bright-white);
 }
 
+input:disabled {
+  border: 1px solid var(--main-darker-grey) !important;
+  background-color: var(--main-darker-grey) !important;
+  color: var(--dark-grey) !important;
+}
+
 /* IDs */
 
 #hamburger {
@@ -270,9 +276,21 @@ button path {
   cursor: pointer;
 }
 
-.generic-button:hover {
+.generic-button:hover,
+.other-button:hover {
   border: solid 1px var(--main-accent-orange);
   background-color: var(--main-accent-orange);
+}
+
+.other-button {
+  width: auto;
+  padding: 11.45px 20.37px;
+  font-size: 14px;
+  border: solid 1px var(--main-darker-grey);
+  border-radius: 3px;
+  transition: all 0.3s;
+  color: var(--bright-white);
+  cursor: pointer;
 }
 
 .round-button {
@@ -310,6 +328,10 @@ button path {
 .emojiPicker ul:first-child {
   position: sticky;
   top: 0;
+}
+
+.warning {
+  color: var(--main-burnt-orange);
 }
 
 /* Media Queries */

@@ -30,6 +30,7 @@ WTForms = "==2.2.1"
 sqlalchemy = "*"
 mypy = "*"
 mysqlclient = "*"
+flask-login = "*"
 
 [requires]
 python_version = "3.6"

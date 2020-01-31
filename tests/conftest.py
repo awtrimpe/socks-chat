@@ -50,7 +50,9 @@ def session(connection):
 @pytest.fixture(scope='function')
 def client(session):
     from app import create_app
-    yield create_app(session).test_client()
+    app = create_app(session)
+    with app.app_context():
+        yield app.test_client()
 
 
 def pytest_sessionfinish(session, exitstatus):
