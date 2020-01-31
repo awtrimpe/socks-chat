@@ -21,10 +21,15 @@
                 {% for error in form.name.errors %}{{ error }}{% endfor %}<br />
                 {{ form.room.label }}: {{ form.room() }}
                 {% for error in form.room.errors %}{{ error }}{% endfor %}<br /><br />
-                <span class="right-align">
+                <span class="horizontal-spaced">
+                    <a class="other-button"
+                        href="{{ url_for('main.register') }}">
+                        Register
+                    </a>
                     {{ form.submit(class_="generic-button") }}
                 </span>
             </form>
+            {{ msg }}
         </div>
     </div>
     <footer class="container">

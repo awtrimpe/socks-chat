@@ -1,0 +1,75 @@
+<html>
+
+<head>
+    <title>Socks Chat | Register</title>
+    <link rel=icon href="{{ url_for('static', filename='socks.png') }}"
+        sizes="any">
+    <link rel="stylesheet" type="text/css"
+        href="{{ url_for('static', filename='style.css') }}" />
+    <script type="text/javascript"
+        src="{{ url_for('static', filename='js/jquery-1.4.2.min.js') }}">
+    </script>
+    <script type="text/javascript" charset="utf-8">
+        function checkPasswordMatch() {
+            let password = $('#password').val();
+            let confirmPassword = $('#password_conf').val();
+            let submit = document.getElementById('submit');
+
+            if (password && confirmPassword) {
+                if (password != confirmPassword) {
+                    $('#msg').html('Passwords do not match!');
+                    submit.disabled = true;
+                } else {
+                    $('#msg').html('');
+                    submit.disabled = false;
+                }
+            }
+        }
+
+        $(document).ready(function () {
+            $('#password').keyup(checkPasswordMatch);
+            $('#password_conf').keyup(checkPasswordMatch);
+        });
+    </script>
+</head>
+
+<body>
+    <header>
+        {% include 'header.html' %}
+    </header>
+    <div class="container">
+        <div class="form-container">
+            <h2>Create Account</h2>
+            <form method="POST">
+                {{ form.hidden_tag() }}
+                {{ form.first_name.label }}: {{ form.first_name() }}
+                {% for error in form.first_name.errors %}{{ error }}{% endfor %}<br />
+                {{ form.last_name.label }}: {{ form.last_name() }}
+                {% for error in form.last_name.errors %}{{ error }}{% endfor %}<br />
+                {{ form.username.label }}: {{ form.username() }}
+                {% for error in form.username.errors %}{{ error }}{% endfor %}<br />
+                {{ form.password.label }}: {{ form.password() }}
+                {% for error in form.password.errors %}{{ error }}{% endfor %}<br />
+                {{ form.password_conf.label }}: {{ form.password_conf() }}
+                {% for error in form.password_conf.errors %}{{ error }}{% endfor %}<br /><br />
+                <span class="horizontal-spaced">
+                    <a class="other-button" href="{{ url_for('main.index') }}">
+                        Login
+                    </a>
+                    {{ form.submit(class_="generic-button") }}
+                </span>
+            </form>
+            <p class="warning" id="msg">{{ msg }}</p>
+        </div>
+    </div>
+    <footer class="container">
+        Socks Chat &copy; 2019 - <text id="year"></text>
+    </footer>
+</body>
+
+<script type="text/javascript" charset="utf-8">
+    document.onload = document.getElementById('year').innerText = new Date()
+        .getFullYear();
+</script>
+
+</html>

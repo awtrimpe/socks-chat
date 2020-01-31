@@ -4,5 +4,5 @@ from app import create_app
 
 
 def describe_app():
-    def test_app():
-        assert create_app()
+    def test_app(session):
+        assert create_app(session)
