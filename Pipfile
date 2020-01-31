@@ -31,7 +31,6 @@ sqlalchemy = "*"
 mypy = "*"
 mysqlclient = "*"
 flask-login = "*"
-flask-bcrypt = "*"
 
 [requires]
 python_version = "3.6"
