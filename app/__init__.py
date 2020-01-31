@@ -2,7 +2,6 @@ import os
 import sys
 
 from flask import Flask, g
-from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
 from flask_socketio import SocketIO
 
@@ -14,7 +13,6 @@ def create_app(get_session, debug=False):
     app = Flask(__name__)
     # login_manager = LoginManager()
     # login_manager.init_app(app)
-    # bcrypt = Bcrypt(app)
     app.debug = debug
 
     @app.before_request
