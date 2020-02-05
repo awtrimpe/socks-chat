@@ -6,14 +6,14 @@ from flask_login import LoginManager
 from flask_socketio import SocketIO
 
 socketio = SocketIO()
+login_manager = LoginManager()
 
 
 def create_app(get_session, debug=False):
     '''Create an application.'''
     app = Flask(__name__)
-    # login_manager = LoginManager()
-    # login_manager.init_app(app)
     app.debug = debug
+    login_manager.init_app(app)
 
     @app.before_request
     def inject_session():

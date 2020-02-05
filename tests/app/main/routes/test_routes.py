@@ -1,5 +1,7 @@
 from flask import url_for
 
+from app.main.users import register_user
+
 
 def describe_index():
     def test_home_page(client):
@@ -9,15 +11,31 @@ def describe_index():
         with client.session_transaction() as session:
             assert session.get('name', '') == ''
 
-    def test_home_logged_in(client):
+    def test_home_logged_in(client, session):
+        with session() as session:
+            new_user = register_user(
+                session, 'anheuserbusch', 'DillyDilly', 'Bud', 'Light')
+            session.add(new_user)
+            session.commit()
+
+            data = {'username': 'anheuserbusch',
+                    'password': 'DillyDilly', 'room': 'AFakeRoom'}
+            resp = client.post('/', data=data, follow_redirects=True)
+            assert resp.status_code == 200
+            assert b'<title>Socks Chat | Chat</title>' in resp.data
+            assert b'AFakeRoom' in resp.data
+            with client.session_transaction() as session:
+                assert session.get('name', '') == 'Bud Light'
+                assert session.get('room', '') == 'AFakeRoom'
+
+    def test_home_not_logged_in(client):
         data = {'name': 'TestUser', 'room': 'AFakeRoom'}
         resp = client.post('/', data=data, follow_redirects=True)
         assert resp.status_code == 200
-        assert b'<title>Socks Chat | Chat</title>' in resp.data
-        assert b'AFakeRoom' in resp.data
+        assert b'<title>Socks Chat | Home</title>' in resp.data
         with client.session_transaction() as session:
-            assert session.get('name', '') == 'TestUser'
-            assert session.get('room', '') == 'AFakeRoom'
+            assert session.get('name', '') == ''
+            assert session.get('room', '') == ''
 
 
 def describe_chat():

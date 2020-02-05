@@ -1,11 +1,11 @@
 import pytest
-from flask import current_app, g, request, url_for
+from flask import current_app, request, url_for
 
 from app.main.database.tables import User
-from app.main.users.registration import register_user
+from app.main.users import get_user, register_user
 
 
-def describe_register():
+def describe_register_user():
     def test_register_unique(session):
         with session() as session:
             resp = register_user(session,
@@ -34,3 +34,23 @@ def describe_register():
             assert user.last_name == 'Morgan'
             assert user.username == 'cmorgan'
             assert user.password != 'LiveLikeTheCaptain'
+
+
+def describe_get_user():
+    def test_valid_user(session):
+        with session() as session:
+            new_user = register_user(
+                session, 'anheuserbusch', 'DillyDilly', 'Bud', 'Light')
+            session.add(new_user)
+            session.commit()
+            user = get_user(session, 'anheuserbusch', 'DillyDilly')
+            assert type(user) == User
+            assert user.first_name == 'Bud'
+            assert user.last_name == 'Light'
+            assert user.username == 'anheuserbusch'
+
+    def test_invalid_user(session):
+        with session() as session:
+            with pytest.raises(Exception) as exc:
+                user = get_user(session, 'notreal', 'password')
+        assert str(exc.value) == 'The username or password provided was incorrect'

@@ -26,3 +26,22 @@ def register_user(session, username, password, first_name, last_name):
     new_user.set_password(new_user.password)
 
     return new_user
+
+
+def get_user(session, username, password):
+    '''
+    Gets user and checks password provided from the database
+
+    Args:
+        session (Session): The database session used to query for existing users
+        username (str): The username in the database
+        password (str): The provided password for the user
+
+    Returns:
+        A User object from the database
+    '''
+    user = session.query(User).filter_by(username=username).first()
+    if user and user.check_password(password=password):
+        return user
+    else:
+        raise Exception('The username or password provided was incorrect')
