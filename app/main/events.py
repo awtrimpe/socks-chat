@@ -6,7 +6,7 @@ from app.main.routes import authenticated_only
 
 
 @socketio.on('joined', namespace='/chat')
-# @authenticated_only
+@authenticated_only
 def joined(message):
     '''Sent by clients when they enter a room.
     A status message is broadcast to all people in the room.'''
@@ -17,7 +17,7 @@ def joined(message):
 
 
 @socketio.on('text', namespace='/chat')
-# @authenticated_only
+@authenticated_only
 def text(message):
     '''Sent by a client when the user entered a new message.
     The message is sent to all people in the room.'''
@@ -28,7 +28,7 @@ def text(message):
 
 
 @socketio.on('left', namespace='/chat')
-# @authenticated_only
+@authenticated_only
 def left(message):
     '''Sent by clients when they leave a room.
     A status message is broadcast to all people in the room.'''
@@ -39,7 +39,7 @@ def left(message):
 
 
 @socketio.on('typing', namespace='/chat')
-# @authenticated_only
+@authenticated_only
 def typing(message):
     '''Sent by a client when the user is typing. A status message is broadcast to
     all people in the room'''
