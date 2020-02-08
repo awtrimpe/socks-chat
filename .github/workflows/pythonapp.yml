@@ -29,6 +29,7 @@ jobs:
       - name: Set environment variables
         run: |
           export test_database='{"username":"sockschat","password":"test","server":"127.0.0.1","database":"socks_test"}'
+          export database='{"username":"sockschat","password":"test","server":"127.0.0.1","database":"socks_test"}'
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
