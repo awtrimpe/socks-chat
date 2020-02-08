@@ -17,8 +17,10 @@
             <h2>Log into Socks</h2>
             <form method="POST">
                 {{ form.hidden_tag() }}
-                {{ form.name.label }}: {{ form.name() }}
-                {% for error in form.name.errors %}{{ error }}{% endfor %}<br />
+                {{ form.username.label }}: {{ form.username() }}
+                {% for error in form.username.errors %}{{ error }}{% endfor %}<br />
+                {{ form.password.label }}: {{ form.password() }}
+                {% for error in form.password.errors %}{{ error }}{% endfor %}<br />
                 {{ form.room.label }}: {{ form.room() }}
                 {% for error in form.room.errors %}{{ error }}{% endfor %}<br /><br />
                 <span class="horizontal-spaced">
@@ -30,6 +32,15 @@
                 </span>
             </form>
             {{ msg }}
+            {% with messages = get_flashed_messages() %}
+            {% if messages %}
+            <ul class="flashes">
+                {% for message in messages %}
+                <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+            {% endwith %}
         </div>
     </div>
     <footer class="container">

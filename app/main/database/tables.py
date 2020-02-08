@@ -1,11 +1,17 @@
+from flask_login import UserMixin
 from sqlalchemy import Column, Integer, String
 from sqlalchemy.ext.declarative import declarative_base
 from werkzeug.security import check_password_hash, generate_password_hash
 
+from app import login_manager
+
 Base = declarative_base()
 
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(user_id)
 
-class User(Base):
+class User(Base, UserMixin):
     __tablename__ = 'users'
     id = Column(Integer, primary_key=True)
     username = Column(String(16), nullable=False)

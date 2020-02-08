@@ -334,6 +334,10 @@ input:disabled {
   color: var(--main-burnt-orange);
 }
 
+.flashes {
+  list-style: none;
+}
+
 /* Media Queries */
 
 @media (prefers-color-scheme: dark) {
