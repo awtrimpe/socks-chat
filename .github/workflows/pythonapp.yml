@@ -12,10 +12,21 @@ jobs:
         uses: actions/setup-python@v1
         with:
           python-version: 3.6
+      - name: Install necessary system packages
+        run: |
+          sudo apt-get install python3.6-dev libmysqlclient-dev
+      - name: Set environment variables
+        run: |
+          export test_database = '{"username":"sockschat","password":"test","server":"127.0.0.1","database":"socks_test"}'
+      - uses: mirromutth/mysql-action@v1.1
+        with:
+          mysql version: "8.0"
+          mysql database: "socks_test"
+          mysql root password: "test"
+          mysql user: "sockschat"
+          mysql password: "test"
       - name: Install dependencies
         run: |
-          export LDFLAGS="-L/usr/local/opt/openssl/lib $LDFLAGS"
-          export CPPFLAGS="-I/usr/local/opt/openssl/include $CPPFLAGS"
           python -m pip install --upgrade pip
           pip install pipenv
           pipenv install --dev
