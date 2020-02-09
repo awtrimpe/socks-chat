@@ -15,6 +15,7 @@ jobs:
           MYSQL_PASSWORD: test
           MYSQL_DATABASE: socks_test
           MYSQL_ROOT_PASSWORD: test
+          MYSQL_ROOT_HOST: %
         options: --health-cmd="mysqladmin ping" --health-interval=5s --health-timeout=2s --health-retries=3
 
     steps:
