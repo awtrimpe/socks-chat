@@ -12,7 +12,7 @@ jobs:
           - 3306
         env:
           MYSQL_USER: sockschat
-          MYSQL_PASSWORD: password
+          MYSQL_PASSWORD: test
           MYSQL_DATABASE: socks_test
           MYSQL_ROOT_PASSWORD: test
         options: --health-cmd="mysqladmin ping" --health-interval=5s --health-timeout=2s --health-retries=3
