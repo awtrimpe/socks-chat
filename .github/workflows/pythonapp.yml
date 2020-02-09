@@ -13,7 +13,7 @@ jobs:
         env:
           MYSQL_USER: root
           MYSQL_PASSWORD: root
-          MYSQL_DATABASE: test
+          MYSQL_DATABASE: socks_test
           MYSQL_ROOT_PASSWORD: root
         options: --health-cmd="mysqladmin ping" --health-interval=5s --health-timeout=2s --health-retries=3
 
@@ -42,8 +42,8 @@ jobs:
         run: |
           pipenv run pytest tests --cov=app
         env:
-          database: '{"username":"root","password":"root","server":"127.0.0.1","database":"test"}'
-          test_database: '{"username":"root","password":"root","server":"127.0.0.1","database":"test"}'
+          database: '{"username":"root","password":"root","server":"127.0.0.1","database":"socks_test"}'
+          test_database: '{"username":"root","password":"root","server":"127.0.0.1","database":"socks_test"}'
       - name: Coveralls
         uses: coverallsapp/github-action@master
         with:
