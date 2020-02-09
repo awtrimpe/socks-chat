@@ -11,10 +11,9 @@ jobs:
         ports:
           - 3306
         env:
-          MYSQL_USER: sockschat
-          MYSQL_PASSWORD: test
-          MYSQL_DATABASE: socks_test
-          MYSQL_ROOT_PASSWORD: test
+          MYSQL_USER: root
+          MYSQL_PASSWORD: root
+          MYSQL_DATABASE: test
         options: --health-cmd="mysqladmin ping" --health-interval=5s --health-timeout=2s --health-retries=3
 
     steps:
