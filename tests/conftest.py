@@ -46,6 +46,7 @@ def session(connection):
             session.close()
     yield get_session
     transaction.rollback()
+    session.close()
 
 
 @pytest.fixture(scope='function')
