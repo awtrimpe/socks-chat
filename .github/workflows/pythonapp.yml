@@ -35,6 +35,7 @@ jobs:
         env:
           database: '{"username":"root","password":"root","server":"127.0.0.1","database":"socks_test"}'
           test_database: '{"username":"root","password":"root","server":"127.0.0.1","database":"socks_test"}'
+          secret_key: secret_key123
       - name: Coveralls
         uses: coverallsapp/github-action@master
         with:
