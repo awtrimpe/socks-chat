@@ -42,8 +42,8 @@ jobs:
         run: |
           pipenv run pytest tests --cov=app
         env:
-          database: '{"username":"sockschat","password":"test","server":"127.0.0.1","database":"socks_test"}'
-          test_database: '{"username":"sockschat","password":"test","server":"127.0.0.1","database":"socks_test"}'
+          database: '{"username":"root","password":"test","server":"127.0.0.1","database":"socks_test"}'
+          test_database: '{"username":"root","password":"test","server":"127.0.0.1","database":"socks_test"}'
           port: ${{ job.services.mariadb.ports[3306] }}
       - name: Coveralls
         uses: coverallsapp/github-action@master
