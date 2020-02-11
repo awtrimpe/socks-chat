@@ -44,7 +44,7 @@ jobs:
         env:
           database: '{"username":"sockschat","password":"test","server":"127.0.0.1","database":"socks_test"}'
           test_database: '{"username":"sockschat","password":"test","server":"127.0.0.1","database":"socks_test"}'
-          port: ${{ job.services.mariadb.ports[3306] }}
+          port: ${{ job.services.mariadb.ports[13306] }}
       - name: Coveralls
         uses: coverallsapp/github-action@master
         with:
