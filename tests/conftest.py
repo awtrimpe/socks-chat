@@ -18,7 +18,7 @@ from chat import create_app
 db = json.loads(os.getenv('test_database', '{}'))
 port = int(os.getenv('port', '3306'))
 engine = create_engine(
-    f'mysql+mysqldb://{db["username"]}:{db["password"]}@{db["server"]}:13306/{db["database"]}')
+    f'mysql+mysqldb://{db["username"]}:{db["password"]}@{db["server"]}:{port}/{db["database"]}')
 Session = sessionmaker()
 
 
