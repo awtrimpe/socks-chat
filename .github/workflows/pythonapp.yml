@@ -11,10 +11,10 @@ jobs:
         ports:
           - 3306
         env:
-          MYSQL_USER: root
-          MYSQL_PASSWORD: root
+          MYSQL_USER: sockschat
+          MYSQL_PASSWORD: test
           MYSQL_DATABASE: socks_test
-          MYSQL_ROOT_PASSWORD: root
+          MYSQL_ROOT_PASSWORD: test
         options: --health-cmd="mysqladmin ping" --health-interval=5s --health-timeout=2s --health-retries=3
 
     steps:
@@ -42,8 +42,9 @@ jobs:
         run: |
           pipenv run pytest tests --cov=app
         env:
-          database: '{"username":"root","password":"root","server":"127.0.0.1","database":"socks_test"}'
-          test_database: '{"username":"root","password":"root","server":"127.0.0.1","database":"socks_test"}'
+          database: '{"username":"sockschat","password":"test","server":"127.0.0.1","database":"socks_test"}'
+          test_database: '{"username":"sockschat","password":"test","server":"127.0.0.1","database":"socks_test"}'
+          port: ${{ job.services.mariadb.ports[3306] }}
       - name: Coveralls
         uses: coverallsapp/github-action@master
         with:
