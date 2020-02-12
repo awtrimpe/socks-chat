@@ -39,13 +39,13 @@ def session(connection):
     def get_session() -> Session:
         try:
             yield session
+            session.commit()
         except BaseException:
             session.rollback()
             raise
         finally:
             session.close()
     yield get_session
-    connection.close()
     transaction.rollback()
 
 
