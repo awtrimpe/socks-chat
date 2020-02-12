@@ -17,13 +17,19 @@ from chat import create_app
 
 db = json.loads(os.getenv('test_database', '{}'))
 port = int(os.getenv('port', '3306'))
-engine = create_engine(
-    f'mysql+mysqldb://{db["username"]}:{db["password"]}@{db["server"]}:{port}/{db["database"]}')
 Session = sessionmaker()
+
+@pytest.fixture(scope='module')
+def engine():
+    engine = create_engine(
+    f'mysql+mysqldb://{db["username"]}:{db["password"]}@{db["server"]}:{port}/{db["database"]}')
+    create_tables(engine)
+    yield engine
+    Base.metadata.drop_all(bind=engine)
 
 
 @pytest.fixture(scope='module')
-def connection():
+def connection(engine):
     connection = engine.connect()
     yield connection
     connection.close()
@@ -31,7 +37,6 @@ def connection():
 
 @pytest.fixture(scope='function')
 def session(connection):
-    create_tables(engine)
     transaction = connection.begin()
     session = Session(bind=connection)
 
@@ -58,5 +63,5 @@ def client(session):
         yield app.test_client()
 
 
-def pytest_sessionfinish(session, exitstatus):
-    Base.metadata.drop_all(bind=engine)
+# def pytest_sessionfinish(session, exitstatus):
+#     Base.metadata.drop_all(bind=engine)
