@@ -58,5 +58,6 @@ def client(session):
         yield app.test_client()
 
 
-# def pytest_sessionfinish(session, exitstatus):
-#     Base.metadata.drop_all(bind=engine)
+def pytest_sessionfinish(session, exitstatus):
+    if os.getenv('drop_tables', 'True') == 'True':
+        Base.metadata.drop_all(bind=engine)
