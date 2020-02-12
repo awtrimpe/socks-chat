@@ -97,8 +97,8 @@ def describe_register():
             assert b'Username already used' in resp.data
 
 
-def describe_logout():
-    def test_logout(client):
-        resp = client.get('/logout', follow_redirects=True)
-        assert b'<title>Socks Chat | Home</title>' in resp.data
-        assert b'You have been successfully logged out' in resp.data
+# def describe_logout():
+#     def test_logout(client):
+#         resp = client.get('/logout', follow_redirects=True)
+#         assert b'<title>Socks Chat | Home</title>' in resp.data
+#         assert b'You have been successfully logged out' in resp.data
