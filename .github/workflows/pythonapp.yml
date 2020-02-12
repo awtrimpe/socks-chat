@@ -32,7 +32,7 @@ jobs:
           flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
       - name: Test with pytest, report to Coveralls
         run: |
-          pipenv run pytest tests --cov=app
+          pipenv run pytest tests --cov=.
           coveralls
         env:
           database: '{"username":"root","password":"root","server":"127.0.0.1","database":"socks_test"}'
