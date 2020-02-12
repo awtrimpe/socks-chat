@@ -17,7 +17,8 @@ def create_app(get_session, debug=False):
 
     @app.before_request
     def inject_session():
-        g.session = get_session
+        with get_session() as session:
+            g.session = session
 
     if 'pytest' in sys.modules:
         app.config['WTF_CSRF_ENABLED'] = False

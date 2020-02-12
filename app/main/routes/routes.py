@@ -13,26 +13,25 @@ bp = Blueprint('main', __name__)
 @bp.route('/', methods=['GET', 'POST'])
 def index():
     '''Login form to enter a room.'''
-    with g.session() as g_session:
-        if current_user.is_authenticated:
+    if current_user.is_authenticated:
+        return redirect(url_for('.chat'))
+    form = LoginForm()
+    if form.validate_on_submit():
+        username = form.username.data
+        password = form.password.data
+        try:
+            user = get_user(g.session, username, password)
+            login_user(user)
+            session['username'] = username
+            session['name'] = f'{user.first_name} {user.last_name}'
+            session['room'] = form.room.data
             return redirect(url_for('.chat'))
-        form = LoginForm()
-        if form.validate_on_submit():
-            username = form.username.data
-            password = form.password.data
-            try:
-                user = get_user(g_session, username, password)
-                login_user(user)
-                session['username'] = username
-                session['name'] = f'{user.first_name} {user.last_name}'
-                session['room'] = form.room.data
-                return redirect(url_for('.chat'))
-            except Exception as err:
-                return render_template('index.html', msg=err, form=form, svg=Markup(svg_contents('./app/static/socks.svg')))
-        elif request.method == 'GET':
-            form.username.data = session.get('name', '')
-            form.room.data = session.get('room', '')
-        return render_template('index.html', form=form, svg=Markup(svg_contents('./app/static/socks.svg')))
+        except Exception as err:
+            return render_template('index.html', msg=err, form=form, svg=Markup(svg_contents('./app/static/socks.svg')))
+    elif request.method == 'GET':
+        form.username.data = session.get('name', '')
+        form.room.data = session.get('room', '')
+    return render_template('index.html', form=form, svg=Markup(svg_contents('./app/static/socks.svg')))
 
 
 @bp.route('/chat')
@@ -54,33 +53,32 @@ def about():
 
 @bp.route('/register', methods=['GET', 'POST'])
 def register():
-    with g.session() as g_session:
-        form = RegisterForm()
-        if request.method == 'GET':
-            return render_template('register.html', form=form, svg=Markup(svg_contents('./app/static/socks.svg')))
-        elif request.method == 'POST':
-            if form.validate_on_submit():
-                username = request.form.get('username')
-                password = request.form.get('password')
-                password_conf = request.form.get('password_conf')
-                first_name = request.form.get('first_name')
-                last_name = request.form.get('last_name')
-                if password != password_conf:
-                    return render_template('register.html', form=form, msg='Passwords did not match', svg=Markup(svg_contents('./app/static/socks.svg')))
+    form = RegisterForm()
+    if request.method == 'GET':
+        return render_template('register.html', form=form, svg=Markup(svg_contents('./app/static/socks.svg')))
+    elif request.method == 'POST':
+        if form.validate_on_submit():
+            username = request.form.get('username')
+            password = request.form.get('password')
+            password_conf = request.form.get('password_conf')
+            first_name = request.form.get('first_name')
+            last_name = request.form.get('last_name')
+            if password != password_conf:
+                return render_template('register.html', form=form, msg='Passwords did not match', svg=Markup(svg_contents('./app/static/socks.svg')))
+            try:
+                new_user = register_user(
+                    g.session, username, password, first_name, last_name)
                 try:
-                    new_user = register_user(
-                        g_session, username, password, first_name, last_name)
-                    try:
-                        # add the new user to the database
-                        g_session.add(new_user)
-                        g_session.commit()
-                    except:
-                        g_session.rollback
-                except Exception as err:
-                    return render_template('register.html', form=form, msg=err, svg=Markup(svg_contents('./app/static/socks.svg')))
-            else:
-                return render_template('register.html', form=form, msg='Not all required fields provided', svg=Markup(svg_contents('./app/static/socks.svg')))
-        return redirect(url_for('.index', msg='Registration successful'))
+                    # add the new user to the database
+                    g.session.add(new_user)
+                    g.session.commit()
+                except:
+                    g.session.rollback
+            except Exception as err:
+                return render_template('register.html', form=form, msg=err, svg=Markup(svg_contents('./app/static/socks.svg')))
+        else:
+            return render_template('register.html', form=form, msg='Not all required fields provided', svg=Markup(svg_contents('./app/static/socks.svg')))
+    return redirect(url_for('.index', msg='Registration successful'))
 
 
 @bp.route('/logout', methods=['GET'])
