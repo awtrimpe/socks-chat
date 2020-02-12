@@ -16,8 +16,9 @@ from chat import create_app
 ###########################
 
 db = json.loads(os.getenv('test_database', '{}'))
+port = int(os.getenv('port', '3306'))
 engine = create_engine(
-    f'mysql+mysqldb://{db["username"]}:{db["password"]}@{db["server"]}:3306/{db["database"]}')
+    f'mysql+mysqldb://{db["username"]}:{db["password"]}@{db["server"]}:{port}/{db["database"]}')
 Session = sessionmaker()
 
 
@@ -38,6 +39,7 @@ def session(connection):
     def get_session() -> Session:
         try:
             yield session
+            session.commit()
         except BaseException:
             session.rollback()
             raise
@@ -45,6 +47,7 @@ def session(connection):
             session.close()
     yield get_session
     transaction.rollback()
+    session.close()
 
 
 @pytest.fixture(scope='function')
@@ -56,4 +59,5 @@ def client(session):
 
 
 def pytest_sessionfinish(session, exitstatus):
-    Base.metadata.drop_all(bind=engine)
+    if os.getenv('drop_tables', 'True') == 'True':
+        Base.metadata.drop_all(bind=engine)

@@ -68,9 +68,12 @@ def register():
             try:
                 new_user = register_user(
                     g.session, username, password, first_name, last_name)
-                # add the new user to the database
-                g.session.add(new_user)
-                g.session.commit()
+                try:
+                    # add the new user to the database
+                    g.session.add(new_user)
+                    g.session.commit()
+                except:
+                    g.session.rollback
             except Exception as err:
                 return render_template('register.html', form=form, msg=err, svg=Markup(svg_contents('./app/static/socks.svg')))
         else:
