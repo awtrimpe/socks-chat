@@ -21,7 +21,7 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install pipenv
-          pip install python-coveralls
+          pip install coveralls
           pipenv install --dev
       - name: Lint with flake8
         run: |
