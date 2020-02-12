@@ -11,6 +11,7 @@ autohooks-plugin-autopep8 = "*"
 pytest = "*"
 pytest-describe = "*"
 pytest-cov = "*"
+coveralls = "*"
 
 [packages]
 click = "==6.7"
