@@ -39,5 +39,7 @@ jobs:
           secret_key: secret_key123
           drop_tables: False
       - name: Coveralls
-      run: |
-        coveralls
+        run: |
+          coveralls
+        env:
+          COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
