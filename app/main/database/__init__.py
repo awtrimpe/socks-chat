@@ -9,7 +9,8 @@ from app.main.database.tables import Base
 
 db = json.loads(os.getenv('database', '{}'))
 engine = create_engine(
-    f'mysql+mysqldb://{db["username"]}:{db["password"]}@{db["server"]}:3306/{db["database"]}')
+    f'mysql+mysqldb://{db["username"]}:{db["password"]}@{db["server"]}:3306/{db["database"]}',
+    pool_recycle=3600)
 db_session = scoped_session(sessionmaker(
     autocommit=False, autoflush=False, bind=engine))
 Session = sessionmaker(bind=engine)
