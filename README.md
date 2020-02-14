@@ -1,5 +1,6 @@
 <img src="app/static/socks.png" width="100" style="background: white; border-radius: 5px"/>
 
+![Test Status](https://github.com/awtrimpe/socks-chat/workflows/Python%20application/badge.svg)
 [![Coverage Status](https://coveralls.io/repos/github/awtrimpe/socks-chat/badge.svg?branch=master)](https://coveralls.io/github/awtrimpe/socks-chat?branch=master)
 
 # Socks Chat Application
