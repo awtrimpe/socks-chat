@@ -23,9 +23,6 @@ def describe_joined():
                     request.namespace = 'Namespace'
                     f_session['name'] = 'Alex'
                     joined('A user joined')
-                    import pdb
-                    pdb.set_trace()
-                    assert True
 
 
 def describe_text():
