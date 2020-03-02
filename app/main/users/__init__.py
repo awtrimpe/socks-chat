@@ -1,5 +1,6 @@
 from flask import Blueprint, redirect, render_template, request, url_for
 
+from app.main.database import get_session
 from app.main.database.tables import User
 
 

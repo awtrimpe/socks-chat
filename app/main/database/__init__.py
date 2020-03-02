@@ -9,16 +9,18 @@ from app.main.database.tables import Base
 
 db = json.loads(os.getenv('database', '{}'))
 engine = create_engine(
-    f'mysql+mysqldb://{db["username"]}:{db["password"]}@{db["server"]}:3306/{db["database"]}')
-db_session = scoped_session(sessionmaker(
-    autocommit=False, autoflush=False, bind=engine))
-Session = sessionmaker(bind=engine)
-Base.query = db_session.query_property()
+    f'mysql+mysqldb://{db["username"]}:{db["password"]}@{db["server"]}:3306/{db["database"]}',
+    pool_recycle=3600, pool_pre_ping=True)
 
 
 @contextmanager
 def get_session():
+    db_session = scoped_session(sessionmaker(
+        autocommit=False, autoflush=False, bind=engine))
+    Session = sessionmaker(bind=engine)
     session = Session()
+    Base.query = db_session.query_property()
+
     try:
         yield session
         session.commit()

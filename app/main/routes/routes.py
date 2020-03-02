@@ -73,7 +73,7 @@ def register():
                     g.session.add(new_user)
                     g.session.commit()
                 except:
-                    g.session.rollback
+                    g.session.rollback()
             except Exception as err:
                 return render_template('register.html', form=form, msg=err, svg=Markup(svg_contents('./app/static/socks.svg')))
         else:

@@ -1,5 +1,7 @@
+from flask import g
 from flask_login import UserMixin
 from sqlalchemy import Column, Integer, String
+from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.ext.declarative import declarative_base
 from werkzeug.security import check_password_hash, generate_password_hash
 
@@ -7,9 +9,18 @@ from app import login_manager
 
 Base = declarative_base()
 
+
 @login_manager.user_loader
 def load_user(user_id):
-    return User.query.get(user_id)
+    try:
+        return User.query.get(int(user_id))
+    except SQLAlchemyError as e:
+        print(f'SQLAlchemyError {e}')
+        return None
+    except Exception as e:
+        print(f'Load failed {e}')
+        return None
+
 
 class User(Base, UserMixin):
     __tablename__ = 'users'
@@ -19,10 +30,10 @@ class User(Base, UserMixin):
     first_name = Column(String(50), nullable=False)
     last_name = Column(String(50), nullable=False)
 
-
     def set_password(self, password):
         '''Create hashed password.'''
-        self.password = generate_password_hash(password, method='pbkdf2:sha256', salt_length=8)
+        self.password = generate_password_hash(
+            password, method='pbkdf2:sha256', salt_length=8)
 
     def check_password(self, password):
         '''Check hashed password.'''

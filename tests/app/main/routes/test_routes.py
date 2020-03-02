@@ -1,3 +1,5 @@
+from unittest.mock import patch
+
 from flask import url_for
 
 from app.main.database.tables import User
@@ -37,6 +39,26 @@ def describe_index():
         with client.session_transaction() as session:
             assert session.get('name', '') == ''
             assert session.get('room', '') == ''
+
+    # def test_user_already_logged_in(client, session):
+    #     with app.app_context():
+    #         with app.test_request_context():
+    #             with session() as session:
+    #                 new_user = register_user(
+    #                     session, 'anheuserbusch', 'DillyDilly', 'Bud', 'Light')
+    #                 session.add(new_user)
+    #                 session.commit()
+    #                 login_user(new_user)
+    #                 resp = client.get('/', follow_redirects=True)
+    #                 assert b'<title>Socks Chat | Chat</title>' in resp.data
+
+    def test_user_not_valid(client, session):
+        data = {'username': 'oneone',
+                'password': 'badpass', 'room': 'AFakeRoom'}
+        resp = client.post('/', data=data, follow_redirects=True)
+        assert resp.status_code == 200
+        assert b'<title>Socks Chat | Home</title>' in resp.data
+        assert b'The username or password provided was incorrect' in resp.data
 
 
 def describe_chat():
@@ -95,6 +117,15 @@ def describe_register():
                     'password_conf': 'ColdAsTheRockies', 'first_name': 'Coors', 'last_name': 'Light'}
             resp = client.post('/register', data=data, follow_redirects=True)
             assert b'Username already used' in resp.data
+
+    # def test_invalid_user_added(client):
+    #     import app.main.users as user_register
+    #     data = {'username': 'sabmiller', 'password': 'ColdAsTheRockies',
+    #             'password_conf': 'ColdAsTheRockies', 'first_name': 'Coors', 'last_name': 'Light'}
+    #     with patch.object(user_register, "register_user", 'simple_string'):
+    #         resp = client.post('/register', data=data, follow_redirects=True)
+    #         assert b'<title>Socks Chat | Register</title>' in resp.data
+    #         assert b'<p class="warning" id="msg">Not all required fields provided</p>' in resp.data
 
 
 def describe_logout():
