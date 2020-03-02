@@ -1,6 +1,7 @@
 from flask import g
 from flask_login import UserMixin
 from sqlalchemy import Column, Integer, String
+from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.ext.declarative import declarative_base
 from werkzeug.security import check_password_hash, generate_password_hash
 
@@ -12,8 +13,12 @@ Base = declarative_base()
 @login_manager.user_loader
 def load_user(user_id):
     try:
-        return User.query.get(user_id)
-    except:
+        return User.query.get(int(user_id))
+    except SQLAlchemyError as e:
+        print(f'SQLAlchemyError {e}')
+        return None
+    except Exception as e:
+        print(f'Load failed {e}')
         return None
 
 
