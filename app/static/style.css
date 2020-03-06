@@ -351,6 +351,10 @@ input:disabled {
     fill: var(--main-brown);
   }
 
+  a {
+    color: var(--main-grey);
+  }
+
   #chat > span {
     background-color: var(--main-dark-blue);
   }

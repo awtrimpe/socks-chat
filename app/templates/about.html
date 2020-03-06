@@ -13,8 +13,29 @@
         {% include 'header.html' %}
     </header>
     <div class="container">
+        <h1>Markdown</h1>
+        <p>
+            This chat includes Markdown by default. To learn more about GitHub,
+            Adam Pritchard has compiled a nice <a
+                href="https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet"
+                target="_blank">
+                cheatsheet</a> to show all available options.
+        </p>
+        <h1>Code Syntax Highlighting</h1>
+        <p>
+            Code syntax highlighting has been included into the chat as well.
+            The project <a href="https://highlightjs.org/"
+                target="_blank">highlight.js
+            </a> is utilized to assist in this. An example of how to use syntax
+            highlighting is as follows:
+        </p>
+        <pre>
+            ```python
+            print("Hello world")
+            ```
+        </pre>
         <a href="https://github.com/awtrimpe/socks-chat" target="_blank">
-            <span class="horizontal main-svg-color">{{ github }}GitHub</span>
+            <span class="horizontal main-svg-color">{{ github }} GitHub</span>
         </a>
     </div>
 </body>
