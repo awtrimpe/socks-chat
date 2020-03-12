@@ -1,0 +1,126 @@
+<html>
+
+<head>
+    <title>Socks Chat | Admin</title>
+    <link rel=icon href="{{ url_for('static', filename='socks.png') }}"
+        sizes="any">
+    <link rel="stylesheet" type="text/css"
+        href="{{ url_for('static', filename='style.css') }}" />
+    <script src="{{ url_for('static', filename='js/snackbar.js') }}"></script>
+    <script type="text/javascript" charset="utf-8">
+        function open_snackbar(msg) {
+            Snackbar.show({
+                text: msg.msg,
+                pos: 'bottom-center'
+            });
+        }
+    </script>
+</head>
+
+<body>
+    <header>
+        {% include 'header.html' %}
+    </header>
+    <div class="container">
+        <h1>Users</h1>
+        <div class="horizontal-spaced" style="font-weight: bold;">
+            <span style="width: 25%;">
+                Name
+            </span>
+            <span style="width: 25%;">
+                Username
+            </span>
+            <span style="width: 25%;">
+                Admin
+            </span>
+            <span style="width: 25%;">
+                Delete
+            </span>
+        </div>
+
+        {% for user in users %}
+        <div class="horizontal-spaced">
+            <span style="width: 25%;">
+                {{ user.User.first_name }} {{ user.User.last_name }}
+            </span>
+            <span style="width: 25%;">
+                {{ user.User.username }}
+            </span>
+            <label class="checkbox-container" style="width: 25%;">
+                {% if user.Permission.name == 'admin' %}
+                <input type="checkbox" id="{{ user.User.id }}" name="user"
+                    checked>
+                {% else %}
+                <input type="checkbox" id="{{ user.User.id }}" name="user">
+                {% endif %}
+                <span class="checkmark"></span>
+            </label>
+            <li class="deleteSvg" style="width: 25%; list-style: none;"
+                value="{{ user.User.id }}" onclick="delete_user(this.value)">
+                {{ trash }}
+            </li>
+        </div>
+        {% endfor %}
+
+        <h1>Admin Control</h1>
+
+        {% for control in controls %}
+        <span class="horizontal">
+            {{ control.name }}
+            <label class="switch" style="margin-left: 10px;">
+                {% if control.value %}
+                <input type="checkbox" value="{{ control.id }}"
+                    onchange="control_change(this.value)" checked>
+                {% else %}
+                <input type="checkbox" value="{{ control.id }}"
+                    onchange="control_change(this.value)">
+                {% endif %}
+                <span class="slider round"></span>
+            </label>
+        </span>
+        {% endfor %}
+
+    </div>
+
+    {% include 'footer.html' %}
+</body>
+
+<script type="text/javascript">
+    function control_change(id) {
+        const xhr = new XMLHttpRequest();
+        const url = '/admin';
+        xhr.open('PATCH', url)
+        xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+        xhr.send(JSON.stringify({
+            'control': id
+        }))
+
+        xhr.onloadend = function () {
+            if (this.readyState === 4 && this.status === 200) {
+                open_snackbar(JSON.parse(xhr.responseText));
+            } else {
+                open_snackbar(xhr.responseText);
+            }
+        }
+    }
+
+    function delete_user(id) {
+        if (confirm('Are you sure would like to delete this user?')) {
+            console.log(id);
+            const a = {
+                'op': 'remove',
+                'user': id
+            }
+        }
+    }
+
+    function admin_change(id) {
+        console.log(id);
+        const a = {
+            'op': 'replace',
+            'user': id
+        }
+    }
+</script>
+
+</html>

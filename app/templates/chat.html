@@ -205,10 +205,6 @@
             <h1 id="title">
                 {{ room }}
             </h1>
-            <a href="{{ url_for('main.logout') }}" class="generic-button"
-                onclick="leave_room();">
-                Leave this room
-            </a>
         </span>
         <div style="display: flex; justify-content: flex-end;">
             <a onclick="clear_chat()">
@@ -226,7 +222,10 @@
             </button>
         </span>
     </div>
+
+    {% include 'footer.html' %}
 </body>
+
 <script src="static/js/meteorEmoji.js"></script>
 <script>
     (() => {

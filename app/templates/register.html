@@ -56,20 +56,18 @@
                     <a class="other-button" href="{{ url_for('main.index') }}">
                         Login
                     </a>
+                    {% if 'user registration has been disabled' in msg %}
+                    {{ form.submit(class_="generic-button", disabled=True) }}
+                    {% else %}
                     {{ form.submit(class_="generic-button") }}
+                    {% endif %}
                 </span>
             </form>
             <p class="warning" id="msg">{{ msg }}</p>
         </div>
     </div>
-    <footer class="container">
-        Socks Chat &copy; 2019 - <text id="year"></text>
-    </footer>
-</body>
 
-<script type="text/javascript" charset="utf-8">
-    document.onload = document.getElementById('year').innerText = new Date()
-        .getFullYear();
-</script>
+    {% include 'footer.html' %}
+</body>
 
 </html>

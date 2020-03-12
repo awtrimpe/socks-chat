@@ -5,7 +5,7 @@ from contextlib import contextmanager
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 
-from app.main.database.tables import Base
+from app.main.database.tables import AdminControl, Base, Permission
 
 db = json.loads(os.getenv('database', '{}'))
 engine = create_engine(
@@ -33,3 +33,27 @@ def get_session():
 
 def create_tables(engine):
     Base.metadata.create_all(engine)
+
+
+def create_database_defaults(get_session):
+    with get_session() as session:
+        create_admin_control(session)
+        create_roles(session)
+
+
+def create_admin_control(session):
+    if not(len(session.query(AdminControl).all()) > 0):
+        controls = [{'name': 'new_users', 'value': True}]
+        for control in controls:
+            ctrl = AdminControl(name=control['name'], value=control['value'])
+            session.add(ctrl)
+            session.commit()
+
+
+def create_roles(session):
+    if not(len(session.query(Permission).all()) > 0):
+        permissions = ['admin', 'user']
+        for permission in permissions:
+            perm = Permission(name=permission)
+            session.add(perm)
+            session.commit()
