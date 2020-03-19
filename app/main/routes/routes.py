@@ -87,19 +87,19 @@ def admin():
                     return jsonify({'msg': f'User permissions changed for ID {user_id}'}), 200
                 except Exception as err:
                     return jsonify({'msg': str(err)}), 500
+                except:
+                    return jsonify({'msg': 'Something went wrong changing the user permission'}), 500
             else:
-                return jsonify({'msg': 'A known value was not supplied'}), 200
+                return jsonify({'msg': 'A known value was not supplied'}), 400
 
-        elif request.method == 'DELETE':
+        else:  # request.method == 'DELETE':
             if request.json.get('user'):
                 user_id = request.json.get('user')
                 delete_user(g.session, user_id)
                 g.session.commit()
                 return jsonify({'msg': f'User with ID {user_id} successfully deleted'}), 200
             else:
-                return jsonify({'msg': 'A known value was not supplied'}), 200
-        else:
-            return 'Unknown request received', 400
+                return jsonify({'msg': 'A known value was not supplied'}), 400
     else:
         return 'Access denied', 401
 
@@ -109,7 +109,7 @@ def chat():
     '''Chat room. The user's name and room must be stored in the session.'''
     admin = is_admin(g.session, current_user)
     username = session.get('username', '')
-    name = session.get('name')
+    name = session.get('name', '')
     room = session.get('room', '')
     if name == '' or room == '':
         flash('You must be logged in to access the chatroom')

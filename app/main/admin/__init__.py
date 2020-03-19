@@ -32,7 +32,7 @@ def get_admin_control_by_name(session: Session, control_name: str) -> AdminContr
     return session.query(AdminControl).filter_by(name=control_name).first()
 
 
-def get_admin_control_by_id(session: Session, control_id: int) -> bool:
+def get_admin_control_by_id(session: Session, control_id: int) -> AdminControl:
     '''
     Gets a single admin control from the database
 

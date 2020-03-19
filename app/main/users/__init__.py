@@ -65,7 +65,7 @@ def get_all_users(session: Session) -> List[User]:
     return session.query(User).all()
 
 
-def get_user_with_permissions(session: Session, user_id: int) -> List:
+def get_user_with_permissions(session: Session, user_id: int):
     '''
     Gets all users from the database with the assigned permissions
 

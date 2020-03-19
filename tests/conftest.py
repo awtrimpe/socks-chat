@@ -74,6 +74,10 @@ def pytest_sessionfinish(session, exitstatus):
 
 
 def test_with_authenticated_user(session):
+    '''
+    Overrides the default login_manager.request_loader and essentially sets the
+    current_user to the first user in the database
+    '''
     @login_manager.request_loader
     def load_user_from_request(request):
         return session.query(User).first()
