@@ -49,9 +49,10 @@
             <label class="checkbox-container" style="width: 25%;">
                 {% if user.Permission.name == 'admin' %}
                 <input type="checkbox" id="{{ user.User.id }}" name="user"
-                    checked>
+                    onchange="admin_change(this.id)" checked>
                 {% else %}
-                <input type="checkbox" id="{{ user.User.id }}" name="user">
+                <input type="checkbox" id="{{ user.User.id }}" name="user"
+                    onchange="admin_change(this.id)">
                 {% endif %}
                 <span class="checkmark"></span>
             </label>
@@ -89,11 +90,12 @@
     function control_change(id) {
         const xhr = new XMLHttpRequest();
         const url = '/admin';
-        xhr.open('PATCH', url)
+        xhr.open('PATCH', url);
         xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
         xhr.send(JSON.stringify({
+            'op': 'replace',
             'control': id
-        }))
+        }));
 
         xhr.onloadend = function () {
             if (this.readyState === 4 && this.status === 200) {
@@ -106,19 +108,48 @@
 
     function delete_user(id) {
         if (confirm('Are you sure would like to delete this user?')) {
-            console.log(id);
-            const a = {
+            const xhr = new XMLHttpRequest();
+            const url = '/admin';
+            xhr.open('DELETE', url);
+            xhr.setRequestHeader('Content-Type',
+                'application/json; charset=UTF-8');
+            xhr.send(JSON.stringify({
                 'op': 'remove',
                 'user': id
+            }));
+
+            xhr.onloadend = function () {
+                if (this.readyState === 4 && this.status === 200) {
+                    open_snackbar(JSON.parse(xhr.responseText));
+                } else {
+                    open_snackbar(JSON.parse(xhr.responseText));
+                }
+                setTimeout(function () {
+                    location.reload();
+                }, 2000);
             }
         }
     }
 
     function admin_change(id) {
-        console.log(id);
-        const a = {
+        const xhr = new XMLHttpRequest();
+        const url = '/admin';
+        xhr.open('PATCH', url);
+        xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+        xhr.send(JSON.stringify({
             'op': 'replace',
             'user': id
+        }));
+
+        xhr.onloadend = function () {
+            if (this.readyState === 4 && this.status === 200) {
+                open_snackbar(JSON.parse(xhr.responseText));
+            } else {
+                open_snackbar(JSON.parse(xhr.responseText));
+            }
+            setTimeout(function () {
+                location.reload();
+            }, 2000);
         }
     }
 </script>

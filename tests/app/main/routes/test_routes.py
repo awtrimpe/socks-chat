@@ -1,9 +1,13 @@
 from unittest.mock import patch
 
-from flask import url_for
+from flask import current_app, url_for
+from flask_login import login_user
 
+from app.main.admin import get_admin_control_by_name
 from app.main.database.tables import User
+from app.main.roles import set_user_permission
 from app.main.users import register_user
+from tests.conftest import test_with_authenticated_user
 
 
 def describe_index():
@@ -61,10 +65,43 @@ def describe_index():
         assert b'The username or password provided was incorrect' in resp.data
 
 
+def describe_about():
+    def test_about_page(client):
+        resp = client.get('/about')
+        assert b'<title>Socks Chat | About</title>' in resp.data
+
+
+def describe_admin():
+    def test_admin_page(client, session):
+        with session() as session:
+            new_user = register_user(
+                session, 'sabmiller', 'ColdAsTheRockies', 'Coors', 'Light')
+            session.add(new_user)
+            session.commit()
+            perm = set_user_permission(session, 'admin', new_user.id)
+            session.add(perm)
+            session.commit()
+
+            test_with_authenticated_user(session)
+
+            resp = client.get('/admin')
+            assert b'<title>Socks Chat | Admin</title>' in resp.data
+            assert b'''<span class="horizontal">
+            new_users''' in resp.data
+            assert b'''sabmiller''' in resp.data
+            assert b'''Coors Light''' in resp.data
+            assert b'''<span class="horizontal">\n            new_users''' in resp.data
+
+    def test_user_not_admin(client):
+        resp = client.get('/admin')
+        assert b'Access denied' in resp.data
+        assert resp.status_code == 401
+
+
 def describe_chat():
     def test_signed_in_chat(client):
         with client.session_transaction() as session:
-            session['name'] = 'TestUser2'
+            session['name'] = 'Test User2'
             session['room'] = 'AFakeRoom2'
         resp = client.get('/chat', follow_redirects=True)
         assert b'<title>Socks Chat | Chat</title>' in resp.data
@@ -74,10 +111,11 @@ def describe_chat():
         assert b'<title>Socks Chat | Home</title>' in resp.data
 
 
-def describe_about():
-    def test_about_page(client):
-        resp = client.get('/about')
-        assert b'<title>Socks Chat | About</title>' in resp.data
+def describe_logout():
+    def test_logout(client):
+        resp = client.get('/logout', follow_redirects=True)
+        assert b'<title>Socks Chat | Home</title>' in resp.data
+        assert b'You have been successfully logged out' in resp.data
 
 
 def describe_register():
@@ -113,6 +151,9 @@ def describe_register():
                 session, 'sabmiller', 'ColdAsTheRockies', 'Coors', 'Light')
             session.add(new_user)
             session.commit()
+            perm = set_user_permission(session, 'admin', new_user.id)
+            session.add(perm)
+            session.commit()
             data = {'username': 'sabmiller', 'password': 'ColdAsTheRockies',
                     'password_conf': 'ColdAsTheRockies', 'first_name': 'Coors', 'last_name': 'Light'}
             resp = client.post('/register', data=data, follow_redirects=True)
@@ -127,9 +168,9 @@ def describe_register():
     #         assert b'<title>Socks Chat | Register</title>' in resp.data
     #         assert b'<p class="warning" id="msg">Not all required fields provided</p>' in resp.data
 
-
-def describe_logout():
-    def test_logout(client):
-        resp = client.get('/logout', follow_redirects=True)
-        assert b'<title>Socks Chat | Home</title>' in resp.data
-        assert b'You have been successfully logged out' in resp.data
+    def test_new_registration_off(client, session):
+        with session() as session:
+            get_admin_control_by_name(session, 'new_users').switch()
+            session.commit()
+            resp = client.get('/register')
+            assert b'New user registration has been disabled at this time' in resp.data

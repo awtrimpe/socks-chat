@@ -18,7 +18,7 @@ def get_admin_controls(session: Session) -> List[AdminControl]:
     return session.query(AdminControl).all()
 
 
-def get_admin_control(session: Session, control_name: str) -> AdminControl:
+def get_admin_control_by_name(session: Session, control_name: str) -> AdminControl:
     '''
     Gets a single admin control from the database
 

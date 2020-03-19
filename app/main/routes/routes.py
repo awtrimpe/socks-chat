@@ -1,17 +1,18 @@
 import json
+import sys
 
 from flask import (Blueprint, Markup, flash, g, jsonify, redirect,
                    render_template, request, session, url_for)
 from flask_login import current_user, login_user, logout_user
 
-from app.main.admin import (get_admin_control, get_admin_control_by_id,
+from app.main.admin import (get_admin_control_by_id, get_admin_control_by_name,
                             get_admin_controls)
 from app.main.database.tables import User
 from app.main.forms import LoginForm, RegisterForm
 from app.main.helpers import svg_contents
-from app.main.roles import set_user_permission
-from app.main.users import (get_all_users_with_permissions, get_user, is_admin,
-                            register_user)
+from app.main.roles import change_user_permission, set_user_permission
+from app.main.users import (delete_user, get_all_users_with_permissions,
+                            get_user, is_admin, register_user)
 
 bp = Blueprint('main', __name__)
 
@@ -35,7 +36,7 @@ def index():
             return redirect(url_for('.chat'))
         except Exception as err:
             return render_template('index.html',
-                                   msg=err,
+                                   msg=str(err),
                                    form=form,
                                    admin=admin,
                                    svg=Markup(svg_contents('./app/static/socks.svg')))
@@ -48,7 +49,6 @@ def index():
 @bp.route('/about')
 def about():
     admin = is_admin(g.session, current_user)
-    print(admin)
     return render_template('about.html',
                            svg=Markup(svg_contents('./app/static/socks.svg')),
                            admin=admin,
@@ -57,8 +57,8 @@ def about():
 
 @bp.route('/admin', methods=['GET', 'PATCH', 'DELETE'])
 def admin():
-    if is_admin(g.session, current_user):
-        admin = is_admin(g.session, current_user)
+    admin = is_admin(g.session, current_user)
+    if admin:
         if request.method == 'GET':
             users = get_all_users_with_permissions(g.session)
             controls = get_admin_controls(g.session)
@@ -80,12 +80,26 @@ def admin():
                 except:
                     return jsonify({'msg': 'Something went wrong changing the control'}), 500
             elif request.json.get('user'):
-                pass
+                try:
+                    user_id = request.json.get('user')
+                    change_user_permission(g.session, user_id)
+                    g.session.commit()
+                    return jsonify({'msg': f'User permissions changed for ID {user_id}'}), 200
+                except Exception as err:
+                    return jsonify({'msg': str(err)}), 500
             else:
                 return jsonify({'msg': 'A known value was not supplied'}), 200
 
         elif request.method == 'DELETE':
-            pass
+            if request.json.get('user'):
+                user_id = request.json.get('user')
+                delete_user(g.session, user_id)
+                g.session.commit()
+                return jsonify({'msg': f'User with ID {user_id} successfully deleted'}), 200
+            else:
+                return jsonify({'msg': 'A known value was not supplied'}), 200
+        else:
+            return 'Unknown request received', 400
     else:
         return 'Access denied', 401
 
@@ -121,9 +135,8 @@ def logout():
 def register():
     admin = is_admin(g.session, current_user)
     form = RegisterForm()
-    print(get_admin_control(g.session, 'new_users').value)
     # Check if 'new_users' is turned on or off
-    if not get_admin_control(g.session, 'new_users').value:
+    if not get_admin_control_by_name(g.session, 'new_users').value:
         return render_template('register.html',
                                form=form,
                                admin=admin,
@@ -147,21 +160,34 @@ def register():
             try:
                 new_user = register_user(
                     g.session, username, password, first_name, last_name)
+                try:
+                    # add the new user to the database
+                    g.session.add(new_user)
+                    g.session.commit()
+                except:
+                    g.session.rollback()
+                    raise Exception('Error adding new user')
                 # Set user's role as 'user'
                 user_permission = set_user_permission(
-                    g.session, new_user.id, 'user')
+                    g.session, 'user', new_user.id)
                 try:
-                    # add the new user and related permission to the database
-                    g.session.add(new_user)
+                    # add the new user's related permission to the database
                     g.session.add(user_permission)
                     g.session.commit()
                 except:
                     g.session.rollback()
+                    raise Exception('Error setting user permissions')
             except Exception as err:
                 return render_template('register.html',
                                        form=form,
                                        admin=admin,
-                                       msg=err,
+                                       msg=str(err),
+                                       svg=Markup(svg_contents('./app/static/socks.svg')))
+            except:
+                return render_template('register.html',
+                                       form=form,
+                                       admin=admin,
+                                       msg=f'Unexpected error: {sys.exc_info()[0]}',
                                        svg=Markup(svg_contents('./app/static/socks.svg')))
         else:
             return render_template('register.html',
@@ -169,4 +195,5 @@ def register():
                                    admin=admin,
                                    msg='Not all required fields provided',
                                    svg=Markup(svg_contents('./app/static/socks.svg')))
-    return redirect(url_for('.index', msg='Registration successful'))
+    flash('Registration successful')
+    return redirect(url_for('.index'))

@@ -106,3 +106,22 @@ def is_admin(session: Session, current_user: LocalProxy) -> bool:
         return True
     else:
         return False
+
+
+def delete_user(session: Session, user_id: int) -> bool:
+    '''
+    Deletes a user and their relevant permissions from the database
+
+    Args:
+        session (Session): The database session used to query for existing users
+        user_id (int): The ID of the user to be removed
+
+    Returns:
+        A boolean on if the deletion was successful or not
+    '''
+    try:
+        session.query(UserPermission).filter_by(user_id=user_id).delete()
+        session.query(User).filter_by(id=user_id).delete()
+        return True
+    except:
+        return False
