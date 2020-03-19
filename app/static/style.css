@@ -38,6 +38,8 @@ body {
 
 header {
   width: 100%;
+  margin-bottom: 2em;
+  border-bottom: 1px solid var(--main-dark-blue);
 }
 
 footer {
@@ -73,6 +75,7 @@ input:disabled {
   border: 1px solid var(--main-darker-grey) !important;
   background-color: var(--main-darker-grey) !important;
   color: var(--dark-grey) !important;
+  cursor: not-allowed;
 }
 
 /* IDs */
@@ -116,6 +119,10 @@ input:disabled {
 
 #side-menu a {
   color: var(--main-dark-blue);
+}
+
+#title {
+  margin: 0;
 }
 
 #title,
@@ -237,6 +244,13 @@ input:disabled {
   z-index: 1;
 }
 
+#profile {
+  border: 3px solid var(--main-dark-blue);
+  border-radius: 50%;
+  padding: 0.5em;
+  font-size: 1.5em;
+}
+
 /* Classes */
 
 .hamburger-clicked:before {
@@ -249,6 +263,35 @@ input:disabled {
 
 .hamburger-clicked div {
   transform: scale(0);
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  right: 0;
+  margin-top: 13px;
+  background-color: var(--main-burnt-orange);
+  color: var(--bright-white);
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+  font-size: initial;
+  padding: 11.45px 20.37px;
+  border-radius: 3px;
+}
+
+.dropdown-content a {
+  display: block;
+  color: var(--bright-white);
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
 }
 
 .container {
@@ -290,6 +333,7 @@ input:disabled {
   border-radius: 3px;
   transition: all 0.3s;
   color: var(--bright-white);
+  background-color: var(--main-grey);
   cursor: pointer;
 }
 
@@ -338,6 +382,234 @@ input:disabled {
   list-style: none;
 }
 
+/* Switch */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 3.5em;
+  height: 1.5em;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: var(--main-grey);
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 1em;
+  width: 1em;
+  left: 4px;
+  bottom: 4px;
+  background-color: var(--bright-white);
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+input:checked + .slider {
+  background-color: var(--main-accent-orange);
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px var(--main-burnt-orange);
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+
+/* Checkbox */
+.checkbox-container {
+  display: block;
+  position: relative;
+  margin-bottom: 12px;
+  cursor: pointer;
+  font-size: 1em;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.checkbox-container input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+.checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 1.2em;
+  width: 1.2em;
+  background-color: var(--bright-white);
+}
+
+.checkbox-container input:checked ~ .checkmark {
+  background-color: var(--main-accent-orange);
+}
+
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+.checkbox-container input:checked ~ .checkmark:after {
+  display: block;
+}
+
+.checkbox-container .checkmark:after {
+  left: 0.35em;
+  top: 0.2em;
+  width: 0.3em;
+  height: 0.5em;
+  border: solid var(--bright-white);
+  border-width: 0 3px 3px 0;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+
+.deleteSvg svg {
+  height: 2em;
+  width: 2em;
+  fill: var(--main-accent-orange);
+  transition: all 0.2s ease-in-out;
+  cursor: pointer;
+}
+
+.deleteSvg svg:hover {
+  fill: var(--main-burnt-orange);
+}
+
+/* ------------------------------------
+[ Snackbar ]*/
+
+.snackbar-container {
+  transition: all 500ms ease;
+  transition-property: top, right, bottom, left, opacity;
+  font-family: Roboto, sans-serif;
+  font-size: 14px;
+  min-height: 14px;
+  background-color: darken(#223140, 15%);
+  position: fixed;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: white;
+  line-height: 22px;
+  padding: 18px 24px;
+  bottom: -100px;
+  top: -100px;
+  opacity: 0;
+  z-index: 9999;
+  border-radius: 6px;
+}
+
+.action {
+  background: inherit;
+  display: inline-block;
+  border: none;
+  font-size: inherit;
+  text-transform: uppercase;
+  color: #0025d8;
+  margin: 0 0 0 24px;
+  padding: 0;
+  min-width: min-content;
+  cursor: pointer;
+  color: var(--main-burnt-orange) !important;
+}
+
+@media (min-width: 640px) {
+  .snackbar-container {
+    min-width: 288px;
+    max-width: 568px;
+    display: inline-flex;
+    margin: 24px;
+  }
+}
+
+@media (max-width: 640px) {
+  .snackbar-container {
+    left: 0;
+    right: 0;
+    width: 100%;
+  }
+}
+
+.snackbar-pos.bottom-center {
+  top: auto !important;
+  bottom: 0;
+  left: 50%;
+  transform: translate(-50%, 0);
+}
+
+.snackbar-pos.bottom-left {
+  top: auto !important;
+  bottom: 0;
+  left: 0;
+}
+
+.snackbar-pos.bottom-right {
+  top: auto !important;
+  bottom: 0;
+  right: 0;
+}
+
+.snackbar-pos.top-left {
+  bottom: auto !important;
+  top: 0;
+  left: 0;
+}
+
+.snackbar-pos.top-center {
+  bottom: auto !important;
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, 0);
+}
+
+.snackbar-pos.top-right {
+  bottom: auto !important;
+  top: 0;
+  right: 0;
+}
+
+@media (max-width: 640px) {
+  .snackbar-pos.bottom-center,
+  .snackbar-pos.top-center {
+    left: 0;
+    transform: none;
+  }
+}
+
 /* Media Queries */
 
 @media (prefers-color-scheme: dark) {
@@ -347,8 +619,16 @@ input:disabled {
     color: var(--bright-white);
   }
 
+  header {
+    border-bottom: 1px solid var(--main-grey);
+  }
+
   button {
     fill: var(--main-brown);
+  }
+
+  a {
+    color: var(--main-grey);
   }
 
   #chat > span {
@@ -393,7 +673,8 @@ input:disabled {
   }
 
   input,
-  textarea {
+  textarea,
+  #profile {
     border-color: var(--main-grey);
   }
 

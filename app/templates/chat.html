@@ -17,6 +17,9 @@
     </script>
     <link rel="stylesheet"
         href="{{ url_for('static', filename='js/highlight/styles/atom-one-dark-reasonable.css') }}">
+    <script type="text/javascript" charset="utf-8"
+        src="{{ url_for('static', filename='js/highlight/highlight.pack.js') }}">
+    </script>
     <script type="text/javascript" charset="utf-8">
         hljs.initHighlightingOnLoad();
     </script>
@@ -137,7 +140,7 @@
         }
 
         function urlify(text) {
-            return text.replace(/(\s|^|p>)(https?:\/\/[^\s]+)/g, function (
+            return text.replace(/(\s|^|<p>)(https?:\/\/[^\s]+)/g, function (
                 url) {
                 return url.replace('<p>', '').replace('</p>', '').link(
                     url.replace('<p>', '').replace('</p>', ''));
@@ -202,10 +205,6 @@
             <h1 id="title">
                 {{ room }}
             </h1>
-            <a href="{{ url_for('main.logout') }}" class="generic-button"
-                onclick="leave_room();">
-                Leave this room
-            </a>
         </span>
         <div style="display: flex; justify-content: flex-end;">
             <a onclick="clear_chat()">
@@ -223,7 +222,10 @@
             </button>
         </span>
     </div>
+
+    {% include 'footer.html' %}
 </body>
+
 <script src="static/js/meteorEmoji.js"></script>
 <script>
     (() => {

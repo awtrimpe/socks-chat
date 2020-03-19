@@ -1,12 +1,31 @@
 <script src="{{ url_for('static', filename='js/main.js') }}"></script>
-<div class="container">
-    <h1 id="title">
-        <span id="hamburger" onclick="menu()">
-            <div id="menu-icon"></div>
-        </span>
-        <a href="/">{{ svg }} Socks Chat</a>
-    </h1>
-    <div id="side-menu">
-        <h3><a href="about">About</a></h3>
+<div class="container horizontal-spaced">
+    <span>
+        <h1 id="title">
+            <span id="hamburger" onclick="menu()">
+                <div id="menu-icon"></div>
+            </span>
+            <a href="/">{{ svg }} Socks Chat</a>
+        </h1>
+        <div id="side-menu">
+            <h3><a href="about">About</a></h3>
+            {% if admin %}
+            <h3>
+                <a href="{{ url_for('main.admin') }}">
+                    Admin
+                </a>
+            </h3>
+            {% endif %}
+        </div>
+    </span>
+    {% if name %}
+    <div id="profile" class="dropdown">
+        {{ name.split()[0][0] }}{{ name.split()[1][0] }}
+        <div class="dropdown-content">
+            <a href="{{ url_for('main.logout') }}" onclick="leave_room();">
+                Logout
+            </a>
+        </div>
     </div>
+    {% endif %}
 </div>

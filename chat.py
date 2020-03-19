@@ -2,10 +2,12 @@ import os
 import sys
 
 from app import create_app, socketio
-from app.main.database import create_tables, engine, get_session
+from app.main.database import (create_database_defaults, create_tables, engine,
+                               get_session)
 
 create_tables(engine)
 app = create_app(get_session)
+create_database_defaults(get_session)
 
 
 def main():
